@@ -1,0 +1,12 @@
+git add . && git commit --allow-empty -m "$1" && git push && ssh timo_germany << EOF
+  sudo -i
+  cd /var/www/TicketScanFront;
+  export NVM_DIR="\$HOME/.nvm";
+  [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"; # Load nvm
+  [ -s "\$NVM_DIR/bash_completion" ] && \. "\$NVM_DIR/bash_completion"; # Load nvm bash_completion (optional)
+  nvm use 22;
+  git pull;
+  yarn;
+  yarn build;
+  pm2 reload TicketScanFront;
+EOF
