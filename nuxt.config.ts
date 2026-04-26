@@ -1,6 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 
+  runtimeConfig: {
+    apiKey: process.env.API_KEY || '',
+    public: {
+      apiHost: process.env.API_HOST || ''
+    }
+  },
+
   devServer: {
     port: 3043
   },
