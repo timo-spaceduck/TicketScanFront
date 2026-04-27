@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import { apiLogin } from '~/utils/api'
+import { apiLogin } from '~/api/auth.api'
 
 definePageMeta({ layout: 'auth' })
 
@@ -88,7 +88,7 @@ const state = reactive({
 const errorMessage = ref('')
 const loading = ref(false)
 const router = useRouter()
-const { token: authToken, userName: authUserName } = useAuth()
+const { token: authToken, fetchMe } = useAuth()
 
 function validate(data) {
   const errors = []
@@ -103,7 +103,7 @@ async function onSubmit() {
   try {
     const response = await apiLogin(state)
     authToken.value = response.token
-    authUserName.value = response.user.name
+    await fetchMe()
     await router.push('/')
   } catch (err) {
     errorMessage.value = err?.response?.data?.message || 'Invalid email or password.'

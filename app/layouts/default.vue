@@ -1,21 +1,9 @@
-<script setup>
-const { isLoggedIn, userName, logout } = useAuth()
-
-const userMenuItems = computed(() => [[
-  {
-    label: 'Sign out',
-    icon: 'i-lucide-log-out',
-    onSelect: logout
-  }
-]])
-</script>
-
 <template>
   <div>
     <UHeader>
       <template #left>
         <NuxtLink to="/">
-          <AppLogo class="w-auto h-6 shrink-0" />
+          <AppLogo class="w-auto h-12 shrink-0"/>
         </NuxtLink>
       </template>
 
@@ -28,11 +16,12 @@ const userMenuItems = computed(() => [[
           :content="{ align: 'end' }"
         >
           <UButton
+            v-if="user"
             color="neutral"
             variant="ghost"
             trailing-icon="i-lucide-chevron-down"
           >
-            {{ userName }}
+            {{ user.email }}
           </UButton>
         </UDropdownMenu>
 
@@ -53,3 +42,17 @@ const userMenuItems = computed(() => [[
     </UMain>
   </div>
 </template>
+
+<script setup>
+const { isLoggedIn, user, logout } = useAuth()
+
+const colorMode = useColorMode()
+
+const userMenuItems = computed(() => [[
+  {
+    label: 'Sign out',
+    icon: 'i-lucide-log-out',
+    onSelect: logout
+  }
+]])
+</script>

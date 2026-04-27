@@ -96,7 +96,7 @@
 </template>
 
 <script setup>
-import { apiRegister } from '~/utils/api'
+import { apiRegister } from '~/api/auth.api'
 
 definePageMeta({ layout: 'auth' })
 
@@ -112,7 +112,7 @@ const state = reactive({
 const errorMessage = ref('')
 const loading = ref(false)
 const router = useRouter()
-const { token: authToken, userName: authUserName } = useAuth()
+const { token: authToken, fetchMe } = useAuth()
 
 function validate(data) {
   const errors = []
@@ -136,7 +136,7 @@ async function onSubmit() {
       password_confirmation: state.password_confirmation
     })
     authToken.value = response.token
-    authUserName.value = response.user.name
+    await fetchMe()
     await router.push('/')
   } catch (err) {
     const serverData = err?.response?.data
