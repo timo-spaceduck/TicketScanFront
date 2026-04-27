@@ -1,46 +1,3 @@
-<script setup lang="ts">
-import { apiLogin, type LoginPayload, type ApiValidationError } from '~/utils/api'
-
-definePageMeta({ layout: 'auth' })
-
-useSeoMeta({ title: 'Sign In — TicketScan' })
-
-const state = reactive<LoginPayload>({
-  email: '',
-  password: ''
-})
-
-const errorMessage = ref('')
-const loading = ref(false)
-const router = useRouter()
-const { token: authToken, userName: authUserName } = useAuth()
-
-type FormError = { name: string; message: string }
-
-function validate(data: LoginPayload): FormError[] {
-  const errors: FormError[] = []
-  if (!data.email) errors.push({ name: 'email', message: 'Email is required' })
-  if (!data.password) errors.push({ name: 'password', message: 'Password is required' })
-  return errors
-}
-
-async function onSubmit() {
-  loading.value = true
-  errorMessage.value = ''
-  try {
-    const response = await apiLogin(state)
-    authToken.value = response.token
-    authUserName.value = response.user.name
-    await router.push('/')
-  } catch (err: unknown) {
-    const apiErr = err as { data?: ApiValidationError }
-    errorMessage.value = apiErr?.data?.message || 'Invalid email or password.'
-  } finally {
-    loading.value = false
-  }
-}
-</script>
-
 <template>
   <UCard class="w-full max-w-sm">
     <template #header>
@@ -73,6 +30,7 @@ async function onSubmit() {
         <UInput
           v-model="state.email"
           type="email"
+          size="xl"
           placeholder="you@example.com"
           autocomplete="email"
           class="w-full"
@@ -83,6 +41,7 @@ async function onSubmit() {
         <UInput
           v-model="state.password"
           type="password"
+          size="xl"
           placeholder="••••••••"
           autocomplete="current-password"
           class="w-full"
@@ -93,6 +52,7 @@ async function onSubmit() {
         type="submit"
         :loading="loading"
         block
+        size="xl"
         class="mt-2"
       >
         Sign in
@@ -112,3 +72,43 @@ async function onSubmit() {
     </template>
   </UCard>
 </template>
+
+<script setup>
+import { apiLogin } from '~/utils/api'
+
+definePageMeta({ layout: 'auth' })
+
+useSeoMeta({ title: 'Sign In — TicketScan' })
+
+const state = reactive({
+  email: '',
+  password: ''
+})
+
+const errorMessage = ref('')
+const loading = ref(false)
+const router = useRouter()
+const { token: authToken, userName: authUserName } = useAuth()
+
+function validate(data) {
+  const errors = []
+  if (!data.email) errors.push({ name: 'email', message: 'Email is required' })
+  if (!data.password) errors.push({ name: 'password', message: 'Password is required' })
+  return errors
+}
+
+async function onSubmit() {
+  loading.value = true
+  errorMessage.value = ''
+  try {
+    const response = await apiLogin(state)
+    authToken.value = response.token
+    authUserName.value = response.user.name
+    await router.push('/')
+  } catch (err) {
+    errorMessage.value = err?.response?.data?.message || 'Invalid email or password.'
+  } finally {
+    loading.value = false
+  }
+}
+</script>

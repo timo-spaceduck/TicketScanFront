@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 const { isLoggedIn, userName, logout } = useAuth()
 
 const userMenuItems = computed(() => [[

@@ -2,9 +2,9 @@
 export default defineNuxtConfig({
 
   runtimeConfig: {
-    apiKey: process.env.API_KEY || '',
     public: {
-      apiHost: process.env.API_HOST || ''
+      apiHost: process.env.API_HOST || '',
+      apiKey: process.env.API_KEY || ''
     }
   },
 

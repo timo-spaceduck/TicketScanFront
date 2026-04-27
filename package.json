@@ -13,6 +13,7 @@
     "@iconify-json/lucide": "^1.2.102",
     "@iconify-json/simple-icons": "^1.2.78",
     "@nuxt/ui": "^4.6.1",
+    "axios": "^1.15.2",
     "nuxt": "^4.4.2",
     "tailwindcss": "^4.2.2"
   },
