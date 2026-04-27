@@ -40,7 +40,7 @@
     />
     <path
       class="a"
-      transform="scale(0.6)"
+      transform="rotate(-50) scale(0.55)"
       transform-origin="center"
       stroke-linecap="round"
       stroke="rgb(44, 169, 188)"
@@ -48,25 +48,32 @@
       fill="none"
       d="m650 416.7c0-46 37.3-83.4 83.3-83.4v-33.3c0-133.3-33.3-166.7-166.6-166.7h-333.4c-133.3 0-166.6 33.4-166.6 166.7v16.7c46 0 83.3 37.3 83.3 83.3 0 46-37.3 83.3-83.3 83.3v16.7c0 133.3 33.3 166.7 166.6 166.7h333.4c133.3 0 166.6-33.4 166.6-166.7-46 0-83.3-37.3-83.3-83.3z"
     />
-    <path
-      class="b"
-      transform="scale(0.6)"
-      transform-origin="center"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke="rgb(44, 169, 188)"
-      stroke-width="60"
-      fill="none"
-      stroke-dasharray="166.66666666666669,166.66666666666669"
-      d="m333.3 133.3v533.4"
-    />
+<!--    <path-->
+<!--      class="b"-->
+<!--      transform="scale(0.55)"-->
+<!--      transform-origin="center"-->
+<!--      stroke-linecap="round"-->
+<!--      stroke-linejoin="round"-->
+<!--      stroke="rgb(44, 169, 188)"-->
+<!--      stroke-width="60"-->
+<!--      fill="none"-->
+<!--      stroke-dasharray="166.66666666666669,166.66666666666669"-->
+<!--      d="m333.3 133.3v533.4"-->
+<!--    />-->
   </svg>
 </template>
 
 <script setup>
 const colorMode = useColorMode()
 
-const isDark = computed(() => colorMode.value === 'dark')
+const mounted = ref(false)
 
-const borderColor = computed(() => colorMode.value === 'dark' ? '#fff' : '#222')
+onMounted(() => {
+  mounted.value = true
+})
+
+const borderColor = computed(() => {
+  if (!mounted.value) return '#222'
+  return colorMode.value === 'dark' ? 'oklch(0.929 0.013 255.508)' : '#222'
+})
 </script>

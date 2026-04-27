@@ -2,7 +2,7 @@
   <UApp>
     <div class="min-h-screen flex flex-col items-center justify-center bg-default px-4">
       <NuxtLink to="/" class="mb-8">
-        <AppLogo class="h-8 w-auto" />
+        <AppLogo class="h-14 w-auto" />
       </NuxtLink>
 
       <slot />
