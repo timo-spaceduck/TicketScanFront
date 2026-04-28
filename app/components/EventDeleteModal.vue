@@ -16,7 +16,7 @@
 
       <p class="text-sm text-muted">
         Are you sure you want to delete
-        <span class="font-semibold text-highlighted">{{ event?.name }}</span>?
+        <span class="font-semibold text-highlighted">{{ event?.title }}</span>?
         This action cannot be undone.
       </p>
     </template>

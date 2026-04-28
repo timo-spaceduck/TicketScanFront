@@ -1,5 +1,5 @@
 <template>
-  <div class="p-8 max-w-5xl mx-auto">
+  <div class="p-4 sm:p-8 max-w-5xl mx-auto">
     <div class="flex items-center justify-between mb-6">
       <div>
         <h1 class="text-2xl font-bold text-highlighted">
@@ -49,34 +49,35 @@
       </p>
     </div>
 
-    <UTable
-      v-else
-      :data="events"
-      :columns="columns"
-    >
-      <template #actions-cell="{ row }">
-        <div class="flex items-center gap-2 justify-end">
-          <UButton
-            size="xs"
-            variant="ghost"
-            color="neutral"
-            leading-icon="i-lucide-pencil"
-            @click="openEditModal(row.original)"
-          >
-            Edit
-          </UButton>
-          <UButton
-            size="xs"
-            variant="ghost"
-            color="error"
-            leading-icon="i-lucide-trash-2"
-            @click="openDeleteModal(row.original)"
-          >
-            Delete
-          </UButton>
-        </div>
-      </template>
-    </UTable>
+    <div v-else class="overflow-x-auto">
+      <UTable
+        :data="events"
+        :columns="columns"
+      >
+        <template #actions-cell="{ row }">
+          <div class="flex items-center gap-2 justify-end">
+            <UButton
+              size="xs"
+              variant="ghost"
+              color="neutral"
+              leading-icon="i-lucide-pencil"
+              @click="openEditModal(row.original)"
+            >
+              Edit
+            </UButton>
+            <UButton
+              size="xs"
+              variant="ghost"
+              color="error"
+              leading-icon="i-lucide-trash-2"
+              @click="openDeleteModal(row.original)"
+            >
+              Delete
+            </UButton>
+          </div>
+        </template>
+      </UTable>
+    </div>
 
     <EventFormModal
       v-model:open="isFormModalOpen"
@@ -109,7 +110,7 @@ const isDeleteModalOpen = ref(false)
 const deletingEvent = ref(null)
 
 const columns = [
-  { accessorKey: 'name', header: 'Name' },
+  { accessorKey: 'title', header: 'Title' },
   { accessorKey: 'description', header: 'Description' },
   { id: 'actions', header: '' }
 ]

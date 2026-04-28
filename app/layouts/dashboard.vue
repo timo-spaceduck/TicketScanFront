@@ -1,10 +1,32 @@
 <template>
   <div class="flex h-screen bg-default overflow-hidden">
-    <aside class="w-64 flex flex-col border-r border-default shrink-0">
-      <div class="flex items-center px-5 h-16 border-b border-default">
+    <!-- Mobile backdrop -->
+    <Transition name="fade">
+      <div
+        v-if="sidebarOpen"
+        class="fixed inset-0 z-20 bg-black/40 lg:hidden"
+        @click="sidebarOpen = false"
+      />
+    </Transition>
+
+    <!-- Sidebar -->
+    <aside
+      class="fixed inset-y-0 left-0 z-30 w-64 flex flex-col border-r border-default bg-default transition-transform duration-200
+             lg:static lg:translate-x-0 lg:z-auto lg:shrink-0"
+      :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+    >
+      <div class="flex items-center justify-between px-5 h-16 border-b border-default shrink-0">
         <NuxtLink to="/dashboard/events">
           <AppLogo class="h-9 w-auto" />
         </NuxtLink>
+        <UButton
+          class="lg:hidden"
+          variant="ghost"
+          color="neutral"
+          icon="i-lucide-x"
+          size="sm"
+          @click="sidebarOpen = false"
+        />
       </div>
 
       <nav class="flex-1 overflow-y-auto p-3 space-y-1">
@@ -16,13 +38,14 @@
           :class="isActive(item.to)
             ? 'bg-primary/10 text-primary'
             : 'text-muted hover:text-highlighted hover:bg-elevated'"
+          @click="sidebarOpen = false"
         >
           <UIcon :name="item.icon" class="size-5 shrink-0" />
           {{ item.label }}
         </NuxtLink>
       </nav>
 
-      <div class="p-3 border-t border-default space-y-1">
+      <div class="p-3 border-t border-default space-y-1 shrink-0">
         <div class="px-3 py-1.5 text-xs text-muted truncate">
           {{ user?.email }}
         </div>
@@ -39,15 +62,34 @@
       </div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto">
-      <slot />
-    </main>
+    <!-- Content -->
+    <div class="flex-1 flex flex-col overflow-hidden min-w-0">
+      <!-- Mobile top bar -->
+      <header class="flex items-center gap-3 px-4 h-14 border-b border-default shrink-0 lg:hidden">
+        <UButton
+          variant="ghost"
+          color="neutral"
+          icon="i-lucide-menu"
+          size="sm"
+          @click="sidebarOpen = true"
+        />
+        <NuxtLink to="/dashboard/events">
+          <AppLogo class="h-8 w-auto" />
+        </NuxtLink>
+      </header>
+
+      <main class="flex-1 overflow-y-auto">
+        <slot />
+      </main>
+    </div>
   </div>
 </template>
 
 <script setup>
 const { user, logout } = useAuth()
 const route = useRoute()
+
+const sidebarOpen = ref(false)
 
 const navItems = [
   { to: '/dashboard/events', label: 'Events', icon: 'i-lucide-calendar' },
@@ -57,4 +99,19 @@ const navItems = [
 function isActive(path) {
   return route.path.startsWith(path)
 }
+
+watch(() => route.path, () => {
+  sidebarOpen.value = false
+})
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

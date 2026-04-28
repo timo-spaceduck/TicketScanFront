@@ -21,11 +21,11 @@
         @submit="submit"
       >
         <UFormField
-          name="name"
-          label="Event name"
+          name="title"
+          label="Event title"
         >
           <UInput
-            v-model="form.name"
+            v-model="form.title"
             size="xl"
             placeholder="Summer Concert 2025"
             class="w-full"
@@ -76,13 +76,13 @@ const props = defineProps({
 
 const emit = defineEmits(['update:open', 'saved'])
 
-const form = reactive({ name: '', description: '' })
+const form = reactive({ title: '', description: '' })
 const saving = ref(false)
 const error = ref('')
 
 watch(() => props.open, (val) => {
   if (val) {
-    form.name = props.event?.name || ''
+    form.title = props.event?.title || ''
     form.description = props.event?.description || ''
     error.value = ''
   }
@@ -90,7 +90,7 @@ watch(() => props.open, (val) => {
 
 function validate(data) {
   const errors = []
-  if (!data.name) errors.push({ name: 'name', message: 'Event name is required' })
+  if (!data.title) errors.push({ name: 'title', message: 'Event title is required' })
   return errors
 }
 
