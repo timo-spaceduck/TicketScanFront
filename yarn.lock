@@ -2796,6 +2796,18 @@
   resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-14.2.1.tgz#829a271147937f6b105bb1422d3171e6142f47ba"
   integrity sha512-shTJncjV9JTI4oVNyF1FQonetYAiTBd+Qj7cY89SWbXSkx7gyhrgtEdF2ZAVWS1S3SHlaROO6F2IesJxQEkZBw==
 
+"@zxing/browser@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@zxing/browser/-/browser-0.2.0.tgz#1bf8e45b1e0935cddf4e425651acff62853d1b6b"
+  integrity sha512-+ORhrLva0vm6ck74NDCmvYNW3XLoAG81Mu90qfcssN1PBKJjQadxZGeMCcIk+BdJbD/zEAjjHDXOwEK1QCmRtw==
+  optionalDependencies:
+    "@zxing/text-encoding" "^0.9.0"
+
+"@zxing/text-encoding@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@zxing/text-encoding/-/text-encoding-0.9.0.tgz#fb50ffabc6c7c66a0c96b4c03e3d9be74864b70b"
+  integrity sha512-U/4aVJ2mxI0aDNI8Uq0wEhMgY+u4CNtEb0om3+y3+niDAsoTCOB33UF0sxpzqzdqXLqmvc+vZyAt4O8pPdfkwA==
+
 abbrev@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-3.0.1.tgz#8ac8b3b5024d31464fe2a5feeea9f4536bf44025"

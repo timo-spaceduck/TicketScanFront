@@ -43,6 +43,18 @@
           <UIcon :name="item.icon" class="size-5 shrink-0" />
           {{ item.label }}
         </NuxtLink>
+
+        <a
+          href="/scanner"
+          target="_blank"
+          rel="noopener"
+          class="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors text-muted hover:text-highlighted hover:bg-elevated"
+          @click="sidebarOpen = false"
+        >
+          <UIcon name="i-lucide-scan-line" class="size-5 shrink-0" />
+          Scanner
+          <UIcon name="i-lucide-external-link" class="size-3.5 ml-auto text-muted/60" />
+        </a>
       </nav>
 
       <div class="p-3 border-t border-default space-y-1 shrink-0">
