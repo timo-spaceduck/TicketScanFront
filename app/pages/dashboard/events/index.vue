@@ -54,26 +54,25 @@
         :data="events"
         :columns="columns"
       >
+        <template #created_at-cell="{ row }">
+          {{ formatDate(row.getValue('created_at')) }}
+        </template>
         <template #actions-cell="{ row }">
           <div class="flex items-center gap-2 justify-end">
             <UButton
               size="xs"
               variant="ghost"
               color="neutral"
-              leading-icon="i-lucide-pencil"
+              icon="i-lucide-pencil"
               @click="openEditModal(row.original)"
-            >
-              Edit
-            </UButton>
+            />
             <UButton
               size="xs"
               variant="ghost"
               color="error"
-              leading-icon="i-lucide-trash-2"
+              icon="i-lucide-trash-2"
               @click="openDeleteModal(row.original)"
-            >
-              Delete
-            </UButton>
+            />
           </div>
         </template>
       </UTable>
@@ -112,8 +111,14 @@ const deletingEvent = ref(null)
 const columns = [
   { accessorKey: 'title', header: 'Title' },
   { accessorKey: 'description', header: 'Description' },
+  { accessorKey: 'created_at', header: 'Date added' },
   { id: 'actions', header: '' }
 ]
+
+function formatDate(value) {
+  if (!value) return '—'
+  return new Date(value).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+}
 
 async function fetchEvents() {
   loading.value = true

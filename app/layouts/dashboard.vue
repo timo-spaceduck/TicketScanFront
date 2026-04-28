@@ -34,7 +34,7 @@
           v-for="item in navItems"
           :key="item.to"
           :to="item.to"
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+          class="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors"
           :class="isActive(item.to)
             ? 'bg-primary/10 text-primary'
             : 'text-muted hover:text-highlighted hover:bg-elevated'"
