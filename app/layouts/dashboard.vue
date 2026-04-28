@@ -16,7 +16,7 @@
       :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
       <div class="flex items-center justify-between px-5 h-16 border-b border-default shrink-0">
-        <NuxtLink to="/dashboard/events">
+        <NuxtLink to="/dashboard">
           <AppLogo class="h-9 w-auto" />
         </NuxtLink>
         <UButton
@@ -73,7 +73,7 @@
           size="sm"
           @click="sidebarOpen = true"
         />
-        <NuxtLink to="/dashboard/events">
+        <NuxtLink to="/dashboard">
           <AppLogo class="h-8 w-auto" />
         </NuxtLink>
       </header>
@@ -92,11 +92,13 @@ const route = useRoute()
 const sidebarOpen = ref(false)
 
 const navItems = [
+  { to: '/dashboard', label: 'Overview', icon: 'i-lucide-layout-dashboard' },
   { to: '/dashboard/events', label: 'Events', icon: 'i-lucide-calendar' },
   { to: '/dashboard/tickets', label: 'Tickets', icon: 'i-lucide-ticket' }
 ]
 
 function isActive(path) {
+  if (path === '/dashboard') return route.path === '/dashboard'
   return route.path.startsWith(path)
 }
 

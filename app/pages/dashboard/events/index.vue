@@ -63,6 +63,13 @@
               size="xs"
               variant="ghost"
               color="neutral"
+              icon="i-lucide-upload"
+              @click="openUploadModal(row.original)"
+            />
+            <UButton
+              size="xs"
+              variant="ghost"
+              color="neutral"
               icon="i-lucide-pencil"
               @click="openEditModal(row.original)"
             />
@@ -89,6 +96,11 @@
       :event="deletingEvent"
       @deleted="fetchEvents"
     />
+
+    <TicketUploadModal
+      v-model:open="isUploadModalOpen"
+      :event="uploadingForEvent"
+    />
   </div>
 </template>
 
@@ -107,6 +119,9 @@ const editingEvent = ref(null)
 
 const isDeleteModalOpen = ref(false)
 const deletingEvent = ref(null)
+
+const isUploadModalOpen = ref(false)
+const uploadingForEvent = ref(null)
 
 const columns = [
   { accessorKey: 'title', header: 'Title' },
@@ -145,6 +160,11 @@ function openEditModal(event) {
 function openDeleteModal(event) {
   deletingEvent.value = event
   isDeleteModalOpen.value = true
+}
+
+function openUploadModal(event) {
+  uploadingForEvent.value = event
+  isUploadModalOpen.value = true
 }
 
 onMounted(fetchEvents)
