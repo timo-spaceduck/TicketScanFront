@@ -38,26 +38,19 @@
     </header>
 
     <!-- Camera area -->
-
     <div class="flex-1 relative overflow-hidden bg-black">
-      <ClientOnly>
-        <video
-          ref="videoRef"
-          class="absolute inset-0 w-full h-full object-cover"
-          autoplay
-          muted
-          playsinline
-        />
-      </ClientOnly>
+      <!-- html5-qrcode mounts its video into this div -->
+      <div
+        id="qr-reader"
+        class="absolute inset-0 w-full h-full"
+      />
 
       <!-- Scan frame overlay -->
       <div
         v-if="!isLoading && !initError"
         class="absolute inset-0 flex items-center justify-center pointer-events-none"
       >
-        <!-- Dimmed surround -->
         <div class="absolute inset-0 bg-black/40" />
-        <!-- Frame cut-out with corners -->
         <div class="relative z-10 w-64 h-64">
           <div class="absolute top-0 left-0 w-10 h-10 border-t-4 border-l-4 border-primary rounded-tl" />
           <div class="absolute top-0 right-0 w-10 h-10 border-t-4 border-r-4 border-primary rounded-tr" />
@@ -117,7 +110,7 @@
           :class="{
             'bg-emerald-500': lastResult.status === 'valid',
             'bg-red-500': lastResult.status === 'invalid',
-            'bg-amber-500': lastResult.status === 'already_scanned'
+            'bg-amber-500': lastResult.status === 'already_scanned',
           }"
         >
           <UIcon
@@ -148,7 +141,6 @@ const eventId = route.params.id
 
 useSeoMeta({ title: 'Scanner — TicketScan' })
 
-const videoRef = ref(null)
 const isLoading = ref(true)
 const loadingMessage = ref('Loading tickets…')
 const initError = ref('')
@@ -167,21 +159,19 @@ const totalCount = computed(() => ticketMap.size)
 
 const cacheKey = k => `scanner_${eventId}_${k}`
 
-let scannerControls = null
+let scanner = null
 let resultTimer = null
 let lastCode = ''
 let lastCodeTime = 0
 
-// ─── Cache helpers ─────────────────────────────────────────────
+// ─── Cache ─────────────────────────────────────────────────────
 
 function loadCache() {
   try {
-    const tickets = JSON.parse(localStorage.getItem(cacheKey('tickets')) || '[]')
-    tickets.forEach(t => ticketMap.set(t.code, t))
-
-    const scanned = JSON.parse(localStorage.getItem(cacheKey('scanned')) || '[]')
-    scanned.forEach(c => scannedCodes.add(c))
-
+    JSON.parse(localStorage.getItem(cacheKey('tickets')) || '[]')
+      .forEach(t => ticketMap.set(t.code, t))
+    JSON.parse(localStorage.getItem(cacheKey('scanned')) || '[]')
+      .forEach(c => scannedCodes.add(c))
     scanQueue.value = JSON.parse(localStorage.getItem(cacheKey('queue')) || '[]')
     pendingCount.value = scanQueue.value.length
   } catch {}
@@ -206,8 +196,8 @@ async function fetchEvent() {
 }
 
 async function fetchTickets() {
-  const tickets = await apiGetEventTickets(eventId)
-  const list = Array.isArray(tickets) ? tickets : tickets.data ?? []
+  const res = await apiGetEventTickets(eventId)
+  const list = Array.isArray(res) ? res : res.data ?? []
   ticketMap.clear()
   list.forEach(t => ticketMap.set(t.code, t))
   localStorage.setItem(cacheKey('tickets'), JSON.stringify(list))
@@ -226,18 +216,31 @@ async function trySyncQueue() {
 // ─── Scanner ───────────────────────────────────────────────────
 
 async function startCamera() {
-  const { BrowserMultiFormatReader } = await import('@zxing/browser')
-  const reader = new BrowserMultiFormatReader()
-  scannerControls = await reader.decodeFromVideoDevice(
-    undefined,
-    videoRef.value,
-    (result) => {
-      if (result) handleScan(result.getText())
-    }
+  const { Html5Qrcode, Html5QrcodeSupportedFormats } = await import('html5-qrcode')
+
+  scanner = new Html5Qrcode('qr-reader', {
+    verbose: false,
+    formatsToSupport: [
+      Html5QrcodeSupportedFormats.QR_CODE,
+      Html5QrcodeSupportedFormats.CODE_128,
+      Html5QrcodeSupportedFormats.EAN_13,
+      Html5QrcodeSupportedFormats.EAN_8,
+      Html5QrcodeSupportedFormats.DATA_MATRIX
+    ]
+  })
+
+  await scanner.start(
+    { facingMode: 'environment' },
+    {
+      fps: 15,
+      aspectRatio: window.innerHeight / window.innerWidth
+    },
+    (decodedText) => handleScan(decodedText)
   )
 }
 
 function handleScan(code) {
+  // console.log('SCANNED!!')
   const now = Date.now()
   if (code === lastCode && now - lastCodeTime < 2500) return
   lastCode = code
@@ -252,10 +255,8 @@ function handleScan(code) {
   if (ticket) {
     scannedCodes.add(code)
     saveScanned()
-
     scanQueue.value.push({ ticket_code: code, scanned_at: new Date().toISOString() })
     saveQueue()
-
     showResult({ status: 'valid', icon: 'i-lucide-check-circle', title: 'Valid ticket', subtitle: ticket.holder || ticket.holder_name || code })
     trySyncQueue()
   } else {
@@ -274,7 +275,6 @@ function showResult(result) {
 async function init() {
   isLoading.value = true
   initError.value = ''
-
   loadCache()
 
   try {
@@ -306,8 +306,8 @@ onMounted(() => {
   init()
 })
 
-onBeforeUnmount(() => {
-  scannerControls?.stop()
+onBeforeUnmount(async () => {
+  if (scanner?.isScanning) await scanner.stop()
   clearTimeout(resultTimer)
   window.removeEventListener('online', onOnline)
   window.removeEventListener('offline', onOffline)
@@ -332,5 +332,27 @@ onBeforeUnmount(() => {
 .result-leave-to {
   opacity: 0;
   transform: translateY(12px);
+}
+
+/* Strip html5-qrcode's own chrome — keep only the raw video feed */
+:deep(#qr-reader > img),
+:deep(#qr-reader__dashboard),
+:deep(#qr-reader__header_message),
+:deep(#qr-reader__filescan_input) {
+  display: none !important;
+}
+
+:deep(#qr-reader video) {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  position: absolute !important;
+  inset: 0 !important;
+}
+
+:deep(#qr-reader__scan_region) {
+  position: absolute !important;
+  inset: 0 !important;
+  background: transparent !important;
 }
 </style>
