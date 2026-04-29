@@ -1,7 +1,12 @@
 import { apiClient } from '~/api/api'
 
 export async function apiGetEvents() {
-  const { data } = await apiClient.get('/shows')
+  const { data } = await apiClient.get('/shows', { params: { per_page: 100 } })
+  return Array.isArray(data) ? data : (data.data ?? data)
+}
+
+export async function apiGetEventsPaginated(page = 1, perPage = 20) {
+  const { data } = await apiClient.get('/shows', { params: { page, per_page: perPage } })
   return data
 }
 

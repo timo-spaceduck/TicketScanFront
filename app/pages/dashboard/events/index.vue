@@ -49,31 +49,41 @@
       </p>
     </div>
 
-    <div
-      v-else
-      class="overflow-x-auto border border-default rounded-lg"
-    >
-      <UTable
-        :data="events"
-        :columns="columns"
+    <template v-else>
+      <div class="overflow-x-auto border border-default rounded-lg">
+        <UTable
+          :data="events"
+          :columns="columns"
+        >
+          <template #created_at-cell="{ row }">
+            {{ formatDate(row.getValue('created_at')) }}
+          </template>
+          <template #actions-cell="{ row }">
+            <div class="flex justify-end">
+              <UDropdownMenu :items="getActionItems(row.original)">
+                <UButton
+                  size="xs"
+                  variant="ghost"
+                  color="neutral"
+                  icon="i-lucide-ellipsis-vertical"
+                />
+              </UDropdownMenu>
+            </div>
+          </template>
+        </UTable>
+      </div>
+
+      <div
+        v-if="totalPages > 1"
+        class="flex justify-center mt-5"
       >
-        <template #created_at-cell="{ row }">
-          {{ formatDate(row.getValue('created_at')) }}
-        </template>
-        <template #actions-cell="{ row }">
-          <div class="flex justify-end">
-            <UDropdownMenu :items="getActionItems(row.original)">
-              <UButton
-                size="xs"
-                variant="ghost"
-                color="neutral"
-                icon="i-lucide-ellipsis-vertical"
-              />
-            </UDropdownMenu>
-          </div>
-        </template>
-      </UTable>
-    </div>
+        <UPagination
+          v-model:page="page"
+          :total="total"
+          :items-per-page="perPage"
+        />
+      </div>
+    </template>
 
     <EventFormModal
       v-model:open="isFormModalOpen"
@@ -100,7 +110,7 @@
 </template>
 
 <script setup>
-import { apiGetEvents } from '~/api/events.api'
+import { apiGetEventsPaginated } from '~/api/events.api'
 
 definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 
@@ -110,6 +120,11 @@ useSeoMeta({ title: 'Events — TicketScan' })
 const events = ref([])
 const loading = ref(true)
 const pageError = ref('')
+const page = ref(1)
+const perPage = 20
+const total = ref(0)
+
+const totalPages = computed(() => Math.ceil(total.value / perPage))
 
 const isFormModalOpen = ref(false)
 const editingEvent = ref(null)
@@ -139,13 +154,18 @@ async function fetchEvents() {
   loading.value = true
   pageError.value = ''
   try {
-    events.value = await apiGetEvents()
+    const res = await apiGetEventsPaginated(page.value, perPage)
+    const items = Array.isArray(res) ? res : (res.data ?? [])
+    events.value = items
+    total.value = res.total ?? res.meta?.total ?? items.length
   } catch {
     pageError.value = 'Failed to load events.'
   } finally {
     loading.value = false
   }
 }
+
+watch(page, fetchEvents)
 
 function openCreateModal() {
   editingEvent.value = null

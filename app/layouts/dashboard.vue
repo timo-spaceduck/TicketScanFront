@@ -123,6 +123,7 @@ const navItems = [
   { to: '/dashboard', label: 'Overview', icon: 'i-lucide-layout-dashboard' },
   { to: '/dashboard/events', label: 'Events', icon: 'i-lucide-calendar' },
   { to: '/dashboard/tickets', label: 'Tickets', icon: 'i-lucide-ticket' },
+  { to: '/dashboard/scans', label: 'Scan Logs', icon: 'i-lucide-history' },
   { to: '/scanner', label: 'Scanner', icon: 'i-lucide-scan-line' }
 ]
 
