@@ -62,7 +62,7 @@ import { apiGetStats } from '~/api/stats.api'
 definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 useSeoMeta({ title: 'Overview — TicketScan' })
 
-const loading = ref(false)
+const loading = ref(true)
 const error = ref('')
 const statsData = ref(null)
 

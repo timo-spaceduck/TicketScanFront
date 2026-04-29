@@ -49,7 +49,10 @@
       </p>
     </div>
 
-    <div v-else class="overflow-x-auto">
+    <div
+      v-else
+      class="overflow-x-auto border border-default rounded-lg"
+    >
       <UTable
         :data="events"
         :columns="columns"
@@ -58,35 +61,15 @@
           {{ formatDate(row.getValue('created_at')) }}
         </template>
         <template #actions-cell="{ row }">
-          <div class="flex items-center gap-2 justify-end">
-            <UButton
-              size="xs"
-              variant="ghost"
-              color="neutral"
-              icon="i-lucide-scan-line"
-              @click="openScanner(row.original)"
-            />
-            <UButton
-              size="xs"
-              variant="ghost"
-              color="neutral"
-              icon="i-lucide-upload"
-              @click="openUploadModal(row.original)"
-            />
-            <UButton
-              size="xs"
-              variant="ghost"
-              color="neutral"
-              icon="i-lucide-pencil"
-              @click="openEditModal(row.original)"
-            />
-            <UButton
-              size="xs"
-              variant="ghost"
-              color="error"
-              icon="i-lucide-trash-2"
-              @click="openDeleteModal(row.original)"
-            />
+          <div class="flex justify-end">
+            <UDropdownMenu :items="getActionItems(row.original)">
+              <UButton
+                size="xs"
+                variant="ghost"
+                color="neutral"
+                icon="i-lucide-ellipsis-vertical"
+              />
+            </UDropdownMenu>
           </div>
         </template>
       </UTable>
@@ -120,7 +103,7 @@ const router = useRouter()
 useSeoMeta({ title: 'Events — TicketScan' })
 
 const events = ref([])
-const loading = ref(false)
+const loading = ref(true)
 const pageError = ref('')
 
 const isFormModalOpen = ref(false)
@@ -176,8 +159,17 @@ function openUploadModal(event) {
   isUploadModalOpen.value = true
 }
 
-function openScanner(event) {
-  router.push(`/scanner/${event.id}`)
+function getActionItems(event) {
+  return [
+    [
+      { label: 'Open scanner', icon: 'i-lucide-scan-line', onSelect: () => router.push(`/scanner/${event.id}`) },
+      { label: 'Upload tickets', icon: 'i-lucide-upload', onSelect: () => openUploadModal(event) },
+      { label: 'Edit', icon: 'i-lucide-pencil', onSelect: () => openEditModal(event) }
+    ],
+    [
+      { label: 'Delete', icon: 'i-lucide-trash-2', color: 'error', onSelect: () => openDeleteModal(event) }
+    ]
+  ]
 }
 
 onMounted(fetchEvents)
