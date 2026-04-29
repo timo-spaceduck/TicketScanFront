@@ -110,7 +110,7 @@
           :class="{
             'bg-emerald-500': lastResult.status === 'valid',
             'bg-red-500': lastResult.status === 'invalid',
-            'bg-amber-500': lastResult.status === 'already_scanned',
+            'bg-amber-500': lastResult.status === 'already_scanned'
           }"
         >
           <UIcon
@@ -232,15 +232,29 @@ async function startCamera() {
   await scanner.start(
     { facingMode: 'environment' },
     {
-      fps: 15,
-      aspectRatio: window.innerHeight / window.innerWidth
+      // fps: 15,
+      // aspectRatio: window.innerHeight / window.innerWidth
     },
     (decodedText) => handleScan(decodedText)
   )
+
+  // const { Html5QrcodeScanner } = await import('html5-qrcode')
+  //
+  // const config = {
+  //   fps: 10,
+  //   qrbox: {width: 100, height: 100},
+  //   rememberLastUsedCamera: true,
+  //   supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+  // }
+  //
+  // const html5QrcodeScanner = new Html5QrcodeScanner(
+  //   'qr-reader', config, false)
+  //
+  // html5QrcodeScanner.render(handleScan)
 }
 
 function handleScan(code) {
-  // console.log('SCANNED!!')
+  console.log('SCANNED!!')
   const now = Date.now()
   if (code === lastCode && now - lastCodeTime < 2500) return
   lastCode = code
