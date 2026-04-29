@@ -63,6 +63,13 @@
               size="xs"
               variant="ghost"
               color="neutral"
+              icon="i-lucide-scan-line"
+              @click="openScanner(row.original)"
+            />
+            <UButton
+              size="xs"
+              variant="ghost"
+              color="neutral"
               icon="i-lucide-upload"
               @click="openUploadModal(row.original)"
             />
@@ -108,6 +115,8 @@
 import { apiGetEvents } from '~/api/events.api'
 
 definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+
+const router = useRouter()
 useSeoMeta({ title: 'Events — TicketScan' })
 
 const events = ref([])
@@ -165,6 +174,10 @@ function openDeleteModal(event) {
 function openUploadModal(event) {
   uploadingForEvent.value = event
   isUploadModalOpen.value = true
+}
+
+function openScanner(event) {
+  router.push(`/scanner/${event.id}`)
 }
 
 onMounted(fetchEvents)

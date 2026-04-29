@@ -61,16 +61,25 @@
         <div class="px-3 py-1.5 text-xs text-muted truncate">
           {{ user?.email }}
         </div>
-        <UButton
-          variant="ghost"
-          color="neutral"
-          leading-icon="i-lucide-log-out"
-          class="w-full justify-start"
-          size="sm"
-          @click="logout"
-        >
-          Sign out
-        </UButton>
+        <div class="flex items-center gap-1">
+          <UButton
+            variant="ghost"
+            color="neutral"
+            leading-icon="i-lucide-log-out"
+            class="flex-1 justify-start"
+            size="sm"
+            @click="logout"
+          >
+            Sign out
+          </UButton>
+          <UButton
+            variant="ghost"
+            color="neutral"
+            :icon="colorMode.value === 'dark' ? 'i-lucide-sun' : 'i-lucide-moon'"
+            size="sm"
+            @click="toggleColorMode"
+          />
+        </div>
       </div>
     </aside>
 
@@ -100,6 +109,11 @@
 <script setup>
 const { user, logout } = useAuth()
 const route = useRoute()
+const colorMode = useColorMode()
+
+function toggleColorMode() {
+  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+}
 
 const sidebarOpen = ref(false)
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen bg-zinc-950 text-white flex flex-col overflow-hidden">
+  <div class="h-dvh bg-zinc-950 text-white flex flex-col overflow-hidden">
     <!-- Header -->
     <header class="flex items-center gap-3 px-4 py-3 bg-zinc-900/80 backdrop-blur-sm border-b border-zinc-800 shrink-0 z-10">
       <button
@@ -35,6 +35,16 @@
           class="text-amber-400"
         >({{ pendingCount }})</span>
       </div>
+
+      <button
+        class="p-1.5 rounded-lg hover:bg-zinc-800 transition-colors shrink-0"
+        @click="$router.push('/dashboard')"
+      >
+        <UIcon
+          name="i-lucide-layout-dashboard"
+          class="size-5 text-zinc-300"
+        />
+      </button>
     </header>
 
     <!-- Camera area -->

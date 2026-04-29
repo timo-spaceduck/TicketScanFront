@@ -2,7 +2,16 @@
   <div class="min-h-screen bg-zinc-950 text-white flex flex-col">
     <header class="flex items-center gap-3 px-4 h-14 bg-zinc-900 border-b border-zinc-800 shrink-0">
       <AppLogo class="h-8 w-auto" />
-      <span class="text-sm font-semibold text-zinc-100">Scanner</span>
+      <span class="text-sm font-semibold text-zinc-100 flex-1">Scanner</span>
+      <NuxtLink
+        to="/dashboard"
+        class="p-1.5 rounded-lg hover:bg-zinc-800 transition-colors"
+      >
+        <UIcon
+          name="i-lucide-layout-dashboard"
+          class="size-5 text-zinc-300"
+        />
+      </NuxtLink>
     </header>
 
     <div class="flex-1 flex flex-col items-center justify-center px-4 py-8">
