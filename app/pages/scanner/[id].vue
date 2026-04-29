@@ -139,7 +139,7 @@
 </template>
 
 <script setup>
-import { apiGetEvent, apiGetEventTickets, apiPostScans } from '~/api/scanner.api'
+import { apiGetEvent, apiGetEventTickets, apiPostScans, apiLookupScan } from '~/api/scanner.api'
 
 definePageMeta({ layout: 'scanner', middleware: 'auth' })
 
@@ -181,11 +181,11 @@ function loadCache() {
   try {
     JSON.parse(localStorage.getItem(cacheKey('tickets')) || '[]')
       .forEach(t => ticketMap.set(t.code, t))
-    JSON.parse(localStorage.getItem(cacheKey('scanned')) || '[]')
-      .forEach(c => scannedCodes.add(c))
     scanQueue.value = JSON.parse(localStorage.getItem(cacheKey('queue')) || '[]')
     pendingCount.value = scanQueue.value.length
   } catch {}
+  scannedCodes.clear()
+  localStorage.removeItem(cacheKey('scanned'))
 }
 
 function saveScanned() {
@@ -259,19 +259,55 @@ async function startCamera() {
   )
 }
 
-function handleScan(code) {
-  console.log('SCANNED!!')
+async function handleScan(code) {
   const now = Date.now()
   if (code === lastCode && now - lastCodeTime < 2500) return
   lastCode = code
   lastCodeTime = now
 
+  scanner?.pause(true)
+
+  if (isOnline.value) {
+    await handleScanOnline(code)
+  } else {
+    handleScanOffline(code)
+  }
+}
+
+async function handleScanOnline(code) {
+  try {
+    const ticketData = await apiLookupScan(eventId, code)
+    const ticket = ticketData?.ticket || null
+    if (!ticket) {
+      showResult({ status: 'invalid', icon: 'i-lucide-x-circle', title: 'Invalid ticket', subtitle: code })
+      scanner?.resume()
+      return
+    }
+    if (ticket.scans && ticket.scans.length > 0) {
+      scannedTicket.value = { ...ticket, code }
+      scannedTicketStatus.value = 'already_scanned'
+      isTicketModalOpen.value = true
+    } else {
+      scannedCodes.add(code)
+      saveScanned()
+      scanQueue.value.push({ code, scanned_at: new Date().toISOString() })
+      saveQueue()
+      trySyncQueue()
+      scannedTicket.value = { ...ticket, code }
+      scannedTicketStatus.value = 'valid'
+      isTicketModalOpen.value = true
+    }
+  } catch {
+    handleScanOffline(code)
+  }
+}
+
+function handleScanOffline(code) {
   if (scannedCodes.has(code)) {
     const ticket = ticketMap.get(code)
     scannedTicket.value = ticket ? { ...ticket, code } : { code }
     scannedTicketStatus.value = 'already_scanned'
     isTicketModalOpen.value = true
-    scanner?.pause(true)
     return
   }
 
@@ -279,15 +315,15 @@ function handleScan(code) {
   if (ticket) {
     scannedCodes.add(code)
     saveScanned()
-    scanQueue.value.push({ code: code, scanned_at: new Date().toISOString() })
+    scanQueue.value.push({ code, scanned_at: new Date().toISOString() })
     saveQueue()
     trySyncQueue()
     scannedTicket.value = { ...ticket, code }
     scannedTicketStatus.value = 'valid'
     isTicketModalOpen.value = true
-    scanner?.pause(true)
   } else {
     showResult({ status: 'invalid', icon: 'i-lucide-x-circle', title: 'Invalid ticket', subtitle: code })
+    scanner?.resume()
   }
 }
 

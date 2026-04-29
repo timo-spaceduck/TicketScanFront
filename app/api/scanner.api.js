@@ -15,6 +15,11 @@ export async function apiPostScans(eventId, scans) {
   return data
 }
 
+export async function apiLookupScan(eventId, code) {
+  const { data } = await apiClient.post('/scans/lookup', { show_id: eventId, code })
+  return data
+}
+
 export async function apiDeleteScans(eventId) {
   await apiClient.delete(`/shows/${eventId}/scans`)
 }

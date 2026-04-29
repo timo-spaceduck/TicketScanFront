@@ -45,6 +45,25 @@
           </div>
         </div>
 
+        <div
+          v-if="isAlreadyScanned && ticket?.scans?.length"
+          class="w-full"
+        >
+          <p class="text-xs text-muted font-medium uppercase tracking-wide mb-2">
+            Scan history
+          </p>
+          <div class="border border-default rounded-xl overflow-hidden divide-y divide-default text-sm">
+            <div
+              v-for="(scan, i) in ticket.scans"
+              :key="i"
+              class="flex justify-between gap-4 px-4 py-3"
+            >
+              <span class="text-muted shrink-0">#{{ i + 1 }}</span>
+              <span class="text-highlighted">{{ formatScanDate(scan.created_at) }}</span>
+            </div>
+          </div>
+        </div>
+
         <UButton
           block
           size="lg"
@@ -68,4 +87,12 @@ const props = defineProps({
 defineEmits(['update:open'])
 
 const isAlreadyScanned = computed(() => props.status === 'already_scanned')
+
+function formatScanDate(value) {
+  if (!value) return '—'
+  return new Date(value).toLocaleString('en-GB', {
+    day: '2-digit', month: 'short', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  })
+}
 </script>
