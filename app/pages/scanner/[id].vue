@@ -1,50 +1,40 @@
 <template>
-  <div class="h-dvh bg-zinc-950 text-white flex flex-col overflow-hidden">
+  <div class="h-dvh bg-default text-highlighted flex flex-col overflow-hidden">
     <!-- Header -->
-    <header class="flex items-center gap-3 px-4 py-3 bg-zinc-900/80 backdrop-blur-sm border-b border-zinc-800 shrink-0 z-10">
+    <header class="flex items-center gap-3 px-4 py-3 bg-elevated/80 backdrop-blur-sm border-b border-default shrink-0 z-10">
       <button
-        class="p-1.5 rounded-lg hover:bg-zinc-800 transition-colors"
+        class="p-1.5 rounded-lg hover:bg-muted transition-colors flex items-center"
         @click="$router.push('/scanner')"
       >
         <UIcon
           name="i-lucide-arrow-left"
-          class="size-5 text-zinc-300"
+          class="size-5 text-muted"
         />
       </button>
 
       <div class="flex-1 min-w-0">
-        <p class="text-sm font-semibold text-zinc-100 truncate">
+        <p class="text-sm font-semibold text-highlighted truncate">
           {{ eventTitle }}
         </p>
-        <p class="text-xs text-zinc-400">
+        <p class="text-xs text-muted">
           {{ scannedCount }} / {{ totalCount }} scanned
         </p>
       </div>
 
       <div
         class="flex items-center gap-1.5 text-xs shrink-0"
-        :class="isOnline ? 'text-emerald-400' : 'text-amber-400'"
+        :class="isOnline ? 'text-emerald-500' : 'text-amber-500'"
       >
         <div
           class="size-2 rounded-full"
-          :class="isOnline ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'"
+          :class="isOnline ? 'bg-emerald-500' : 'bg-amber-500 animate-pulse'"
         />
         <span>{{ isOnline ? 'Online' : 'Offline' }}</span>
         <span
           v-if="pendingCount > 0"
-          class="text-amber-400"
+          class="text-amber-500"
         >({{ pendingCount }})</span>
       </div>
-
-      <button
-        class="p-1.5 rounded-lg hover:bg-zinc-800 transition-colors shrink-0"
-        @click="$router.push('/dashboard')"
-      >
-        <UIcon
-          name="i-lucide-layout-dashboard"
-          class="size-5 text-zinc-300"
-        />
-      </button>
     </header>
 
     <!-- Camera area -->
@@ -68,7 +58,7 @@
           <div class="absolute bottom-0 right-0 w-10 h-10 border-b-4 border-r-4 border-primary rounded-br" />
           <div class="scan-line absolute inset-x-0 h-0.5 bg-primary/80 shadow-[0_0_6px_2px_rgba(var(--ui-primary)/0.5)]" />
         </div>
-        <p class="absolute bottom-28 text-xs text-zinc-400 tracking-wide">
+        <p class="absolute bottom-28 text-xs text-white/60 tracking-wide">
           Point camera at QR code or barcode
         </p>
       </div>
@@ -76,13 +66,13 @@
       <!-- Loading overlay -->
       <div
         v-if="isLoading"
-        class="absolute inset-0 bg-zinc-950/95 flex flex-col items-center justify-center gap-4"
+        class="absolute inset-0 bg-default/95 flex flex-col items-center justify-center gap-4"
       >
         <UIcon
           name="i-lucide-loader-circle"
           class="size-10 animate-spin text-primary"
         />
-        <p class="text-sm text-zinc-400">
+        <p class="text-sm text-muted">
           {{ loadingMessage }}
         </p>
       </div>
@@ -90,17 +80,17 @@
       <!-- Error overlay -->
       <div
         v-if="initError"
-        class="absolute inset-0 bg-zinc-950/98 flex flex-col items-center justify-center gap-5 px-8 text-center"
+        class="absolute inset-0 bg-default/98 flex flex-col items-center justify-center gap-5 px-8 text-center"
       >
         <UIcon
           name="i-lucide-camera-off"
-          class="size-14 text-zinc-600"
+          class="size-14 text-muted"
         />
         <div>
-          <p class="text-sm font-medium text-zinc-300 mb-1">
+          <p class="text-sm font-medium text-highlighted mb-1">
             Scanner unavailable
           </p>
-          <p class="text-xs text-zinc-500">
+          <p class="text-xs text-muted">
             {{ initError }}
           </p>
         </div>

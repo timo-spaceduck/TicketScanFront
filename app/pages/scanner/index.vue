@@ -1,25 +1,25 @@
 <template>
-  <div class="min-h-screen bg-zinc-950 text-white flex flex-col">
-    <header class="flex items-center gap-3 px-4 h-14 bg-zinc-900 border-b border-zinc-800 shrink-0">
-      <AppLogo class="h-8 w-auto" />
-      <span class="text-sm font-semibold text-zinc-100 flex-1">Scanner</span>
+  <div class="h-dvh bg-default text-highlighted flex flex-col">
+    <header class="flex items-center gap-3 px-4 h-14 bg-elevated border-b border-default shrink-0">
       <NuxtLink
         to="/dashboard"
-        class="p-1.5 rounded-lg hover:bg-zinc-800 transition-colors"
+        class="p-1.5 rounded-lg hover:bg-muted transition-colors flex items-center"
       >
         <UIcon
-          name="i-lucide-layout-dashboard"
-          class="size-5 text-zinc-300"
+          name="i-lucide-arrow-left"
+          class="size-5 text-muted"
         />
       </NuxtLink>
+      <AppLogo class="h-8 w-auto" />
+      <span class="text-sm font-semibold text-highlighted">Scanner</span>
     </header>
 
     <div class="flex-1 flex flex-col items-center justify-center px-4 py-8">
       <div class="w-full max-w-sm">
-        <h1 class="text-xl font-bold text-zinc-100 mb-1">
+        <h1 class="text-xl font-bold text-highlighted mb-1">
           Select event
         </h1>
-        <p class="text-sm text-zinc-400 mb-6">
+        <p class="text-sm text-muted mb-6">
           Choose the event you want to scan tickets for.
         </p>
 
@@ -29,20 +29,20 @@
         >
           <UIcon
             name="i-lucide-loader-circle"
-            class="size-8 animate-spin text-zinc-500"
+            class="size-8 animate-spin text-muted"
           />
         </div>
 
         <div
           v-else-if="error"
-          class="text-sm text-red-400 text-center py-8"
+          class="text-sm text-red-500 text-center py-8"
         >
           {{ error }}
         </div>
 
         <div
           v-else-if="events.length === 0"
-          class="text-sm text-zinc-500 text-center py-8"
+          class="text-sm text-muted text-center py-8"
         >
           No events found.
         </div>
@@ -54,7 +54,7 @@
           <button
             v-for="event in events"
             :key="event.id"
-            class="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 transition-colors text-left"
+            class="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl bg-elevated hover:bg-muted border border-default transition-colors text-left"
             @click="selectEvent(event.id)"
           >
             <div class="flex items-center justify-center size-10 rounded-lg bg-primary/15 shrink-0">
@@ -64,19 +64,19 @@
               />
             </div>
             <div class="min-w-0">
-              <p class="text-sm font-medium text-zinc-100 truncate">
+              <p class="text-sm font-medium text-highlighted truncate">
                 {{ event.title }}
               </p>
               <p
                 v-if="event.description"
-                class="text-xs text-zinc-500 truncate"
+                class="text-xs text-muted truncate"
               >
                 {{ event.description }}
               </p>
             </div>
             <UIcon
               name="i-lucide-chevron-right"
-              class="size-4 text-zinc-600 shrink-0 ml-auto"
+              class="size-4 text-muted shrink-0 ml-auto"
             />
           </button>
         </div>
