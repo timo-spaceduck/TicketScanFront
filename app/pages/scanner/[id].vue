@@ -216,6 +216,7 @@ async function trySyncQueue() {
 // ─── Scanner ───────────────────────────────────────────────────
 
 async function startCamera() {
+  console.log('startCamera')
   const { Html5Qrcode, Html5QrcodeSupportedFormats } = await import('html5-qrcode')
 
   scanner = new Html5Qrcode('qr-reader', {
@@ -235,22 +236,11 @@ async function startCamera() {
       // fps: 15,
       // aspectRatio: window.innerHeight / window.innerWidth
     },
-    (decodedText) => handleScan(decodedText)
+    (decodedText) => handleScan(decodedText),
+    (error) => {
+      console.error(error)
+    }
   )
-
-  // const { Html5QrcodeScanner } = await import('html5-qrcode')
-  //
-  // const config = {
-  //   fps: 10,
-  //   qrbox: {width: 100, height: 100},
-  //   rememberLastUsedCamera: true,
-  //   supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
-  // }
-  //
-  // const html5QrcodeScanner = new Html5QrcodeScanner(
-  //   'qr-reader', config, false)
-  //
-  // html5QrcodeScanner.render(handleScan)
 }
 
 function handleScan(code) {
