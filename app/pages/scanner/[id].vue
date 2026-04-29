@@ -224,6 +224,7 @@ async function startCamera() {
     formatsToSupport: [
       Html5QrcodeSupportedFormats.QR_CODE,
       Html5QrcodeSupportedFormats.CODE_128,
+      Html5QrcodeSupportedFormats.CODE_93,
       Html5QrcodeSupportedFormats.CODE_39,
       Html5QrcodeSupportedFormats.EAN_13,
       Html5QrcodeSupportedFormats.EAN_8,
@@ -234,13 +235,16 @@ async function startCamera() {
   await scanner.start(
     { facingMode: 'environment' },
     {
-      // fps: 15,
-      // aspectRatio: window.innerHeight / window.innerWidth
+      fps: 30,
+      // aspectRatio: window.innerHeight / window.innerWidth,
+      // qrbox: (w, h) => ({
+      //   width: Math.round(Math.min(w, h) * 0.85),
+      //   height: Math.round(Math.min(w, h) * 0.45)
+      // }),
+      experimentalFeatures: { useBarCodeDetectorIfSupported: true }
     },
-    (decodedText) => handleScan(decodedText),
-    (error) => {
-      console.error(error)
-    }
+    handleScan,
+    () => {}
   )
 }
 
