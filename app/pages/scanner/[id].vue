@@ -38,14 +38,17 @@
     </header>
 
     <!-- Camera area -->
+
     <div class="flex-1 relative overflow-hidden bg-black">
-      <video
-        ref="videoRef"
-        class="absolute inset-0 w-full h-full object-cover"
-        autoplay
-        muted
-        playsinline
-      />
+      <ClientOnly>
+        <video
+          ref="videoRef"
+          class="absolute inset-0 w-full h-full object-cover"
+          autoplay
+          muted
+          playsinline
+        />
+      </ClientOnly>
 
       <!-- Scan frame overlay -->
       <div
@@ -114,7 +117,7 @@
           :class="{
             'bg-emerald-500': lastResult.status === 'valid',
             'bg-red-500': lastResult.status === 'invalid',
-            'bg-amber-500': lastResult.status === 'already_scanned',
+            'bg-amber-500': lastResult.status === 'already_scanned'
           }"
         >
           <UIcon
@@ -162,7 +165,7 @@ const scanQueue = ref([])
 const scannedCount = computed(() => scannedCodes.size)
 const totalCount = computed(() => ticketMap.size)
 
-const cacheKey = (k) => `scanner_${eventId}_${k}`
+const cacheKey = k => `scanner_${eventId}_${k}`
 
 let scannerControls = null
 let resultTimer = null
@@ -223,7 +226,6 @@ async function trySyncQueue() {
 // ─── Scanner ───────────────────────────────────────────────────
 
 async function startCamera() {
-  if (!process.client) return
   const { BrowserMultiFormatReader } = await import('@zxing/browser')
   const reader = new BrowserMultiFormatReader()
   scannerControls = await reader.decodeFromVideoDevice(
