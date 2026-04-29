@@ -140,7 +140,7 @@ const scansDeleteEvent = ref(null)
 
 const columns = [
   { accessorKey: 'title', header: 'Title' },
-  { accessorKey: 'description', header: 'Description' },
+  { accessorKey: 'description', header: 'Description', meta: { class: { td: 'whitespace-normal break-words max-w-sm' } } },
   { accessorKey: 'created_at', header: 'Date added' },
   { id: 'actions', header: '' }
 ]
