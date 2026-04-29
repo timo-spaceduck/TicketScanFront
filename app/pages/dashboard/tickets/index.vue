@@ -18,7 +18,10 @@
       </UButton>
     </div>
 
-    <div class="mb-5">
+    <div
+      v-if="selectedEventId"
+      class="mb-5"
+    >
       <USelect
         v-model="selectedEventId"
         :items="eventOptions"
@@ -38,15 +41,51 @@
 
     <div
       v-if="!selectedEventId"
-      class="flex flex-col items-center py-16 text-center"
+      class="grid grid-cols-1 sm:grid-cols-2 gap-4"
     >
-      <UIcon
-        name="i-lucide-calendar"
-        class="size-12 mb-3 text-muted"
-      />
-      <p class="text-muted text-sm">
-        Select an event to view its tickets.
-      </p>
+      <div class="border border-default rounded-xl p-6 flex flex-col gap-4">
+        <div class="flex flex-col items-center text-center gap-2">
+          <UIcon
+            name="i-lucide-ticket"
+            class="size-10 text-primary"
+          />
+          <p class="font-semibold text-highlighted">
+            Browse tickets
+          </p>
+          <p class="text-sm text-muted">
+            Select an event to view and manage its tickets
+          </p>
+        </div>
+        <USelect
+          v-model="selectedEventId"
+          :items="eventOptions"
+          placeholder="Select an event…"
+          size="lg"
+        />
+      </div>
+
+      <div class="border border-default rounded-xl p-6 flex flex-col items-center text-center gap-4">
+        <UIcon
+          name="i-lucide-upload"
+          class="size-10 text-primary"
+        />
+        <div>
+          <p class="font-semibold text-highlighted">
+            Upload tickets
+          </p>
+          <p class="text-sm text-muted">
+            Import tickets from a CSV or Excel file
+          </p>
+        </div>
+        <UButton
+          variant="soft"
+          leading-icon="i-lucide-upload"
+          class="w-full justify-center"
+          @click="isUploadModalOpen = true"
+        >
+          Upload file
+        </UButton>
+      </div>
     </div>
 
     <div
@@ -124,6 +163,10 @@
       :ticket="deletingTicket"
       @deleted="fetchTickets"
     />
+
+    <TicketUploadModal
+      v-model:open="isUploadModalOpen"
+    />
   </div>
 </template>
 
@@ -150,6 +193,7 @@ const isFormModalOpen = ref(false)
 const editingTicket = ref(null)
 const isDeleteModalOpen = ref(false)
 const deletingTicket = ref(null)
+const isUploadModalOpen = ref(false)
 
 const eventOptions = computed(() =>
   events.value.map(e => ({ label: e.title, value: e.id }))
