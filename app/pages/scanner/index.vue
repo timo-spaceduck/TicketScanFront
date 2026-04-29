@@ -10,8 +10,8 @@
           class="size-5 text-muted"
         />
       </NuxtLink>
-      <AppLogo class="h-8 w-auto" />
-      <span class="text-sm font-semibold text-highlighted">Scanner</span>
+      <AppLogo class="h-8 w-auto shrink-0" />
+      <span class="app-wordmark">Ticket<strong>Scan</strong></span>
     </header>
 
     <div class="flex-1 flex flex-col items-center justify-center px-4 py-8">

@@ -6,7 +6,7 @@
           Sign in to your account
         </h1>
         <p class="mt-1 text-sm text-muted">
-          Welcome back
+          And start validating!
         </p>
       </div>
     </template>

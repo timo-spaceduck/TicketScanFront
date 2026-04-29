@@ -1,5 +1,21 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&display=swap');
+
+.app-wordmark {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ui-text-highlighted);
+  white-space: nowrap;
+}
+
+.app-wordmark strong {
+  font-weight: 700;
+  color: rgb(44, 169, 188);
+}
 
 @theme static {
   --font-sans: 'Public Sans', sans-serif;
