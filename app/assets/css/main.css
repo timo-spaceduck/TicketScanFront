@@ -14,11 +14,23 @@
 
 .app-wordmark strong {
   font-weight: 700;
-  color: rgb(44, 169, 188);
+  color: var(--color-brand-500);
 }
 
 @theme static {
   --font-sans: 'Public Sans', sans-serif;
+
+  --color-brand-50: #edfcfe;
+  --color-brand-100: #d0f4f9;
+  --color-brand-200: #a5e9f2;
+  --color-brand-300: #67d8e8;
+  --color-brand-400: #30bdd0;
+  --color-brand-500: #2ca9bc;
+  --color-brand-600: #1f8a9c;
+  --color-brand-700: #1e7082;
+  --color-brand-800: #1e5b6a;
+  --color-brand-900: #1e4c58;
+  --color-brand-950: #0e3040;
 
   --color-green-50: #EFFDF5;
   --color-green-100: #D9FBE8;

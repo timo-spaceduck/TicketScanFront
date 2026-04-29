@@ -43,7 +43,7 @@
       transform="rotate(-50) scale(0.55)"
       transform-origin="center"
       stroke-linecap="round"
-      stroke="rgb(44, 169, 188)"
+      stroke="var(--color-brand-500)"
       stroke-width="60"
       fill="none"
       d="m650 416.7c0-46 37.3-83.4 83.3-83.4v-33.3c0-133.3-33.3-166.7-166.6-166.7h-333.4c-133.3 0-166.6 33.4-166.6 166.7v16.7c46 0 83.3 37.3 83.3 83.3 0 46-37.3 83.3-83.3 83.3v16.7c0 133.3 33.3 166.7 166.6 166.7h333.4c133.3 0 166.6-33.4 166.6-166.7-46 0-83.3-37.3-83.3-83.3z"
@@ -54,7 +54,7 @@
 <!--      transform-origin="center"-->
 <!--      stroke-linecap="round"-->
 <!--      stroke-linejoin="round"-->
-<!--      stroke="rgb(44, 169, 188)"-->
+<!--      stroke="var(--color-brand-500)"-->
 <!--      stroke-width="60"-->
 <!--      fill="none"-->
 <!--      stroke-dasharray="166.66666666666669,166.66666666666669"-->
