@@ -50,15 +50,15 @@
         v-if="!isLoading && !initError"
         class="absolute inset-0 flex items-center justify-center pointer-events-none"
       >
-        <div class="absolute inset-0 bg-black/40" />
-        <div class="relative z-10 w-64 h-64">
+        <!--        <div class="relative z-10 w-64 h-64 shadow-[0_0_0_9999px_rgba(0,0,0,0.45)]"> -->
+        <div class="relative z-10 w-64 h-64 shadow-[0_0_0_9999px_rgba(0,0,0,0.65)]">
           <div class="absolute top-0 left-0 w-10 h-10 border-t-4 border-l-4 border-primary rounded-tl" />
           <div class="absolute top-0 right-0 w-10 h-10 border-t-4 border-r-4 border-primary rounded-tr" />
           <div class="absolute bottom-0 left-0 w-10 h-10 border-b-4 border-l-4 border-primary rounded-bl" />
           <div class="absolute bottom-0 right-0 w-10 h-10 border-b-4 border-r-4 border-primary rounded-br" />
           <div class="scan-line absolute inset-x-0 h-0.5 bg-primary/80 shadow-[0_0_6px_2px_rgba(var(--ui-primary)/0.5)]" />
         </div>
-        <p class="absolute bottom-28 text-xs text-white/60 tracking-wide">
+        <p class="absolute bottom-28 text-xs text-white/60 tracking-wide z-10">
           Point camera at QR code or barcode
         </p>
       </div>
@@ -101,6 +101,13 @@
           Try again
         </button>
       </div>
+
+      <!-- Scan result modal -->
+      <ScanResultModal
+        v-model:open="isTicketModalOpen"
+        :ticket="scannedTicket"
+        :status="scannedTicketStatus"
+      />
 
       <!-- Scan result toast -->
       <Transition name="result">
@@ -149,6 +156,10 @@ const eventTitle = ref('Scanner')
 const isOnline = ref(true)
 const lastResult = ref(null)
 const pendingCount = ref(0)
+
+const isTicketModalOpen = ref(false)
+const scannedTicket = ref(null)
+const scannedTicketStatus = ref('valid')
 
 const ticketMap = new Map()
 const scannedCodes = new Set()
@@ -207,16 +218,16 @@ async function trySyncQueue() {
   if (!isOnline.value || scanQueue.value.length === 0) return
   const batch = [...scanQueue.value]
   try {
-    await apiPostScans(eventId, batch)
-    scanQueue.value = []
-    saveQueue()
+    const res = await apiPostScans(eventId, batch)
+    if (res.success) {
+      clearData(false)
+    }
   } catch {}
 }
 
 // ─── Scanner ───────────────────────────────────────────────────
 
 async function startCamera() {
-  console.log('startCamera')
   const { Html5Qrcode, Html5QrcodeSupportedFormats } = await import('html5-qrcode')
 
   scanner = new Html5Qrcode('qr-reader', {
@@ -256,7 +267,11 @@ function handleScan(code) {
   lastCodeTime = now
 
   if (scannedCodes.has(code)) {
-    showResult({ status: 'already_scanned', icon: 'i-lucide-alert-circle', title: 'Already scanned', subtitle: code })
+    const ticket = ticketMap.get(code)
+    scannedTicket.value = ticket ? { ...ticket, code } : { code }
+    scannedTicketStatus.value = 'already_scanned'
+    isTicketModalOpen.value = true
+    scanner?.pause(true)
     return
   }
 
@@ -264,19 +279,39 @@ function handleScan(code) {
   if (ticket) {
     scannedCodes.add(code)
     saveScanned()
-    scanQueue.value.push({ ticket_code: code, scanned_at: new Date().toISOString() })
+    scanQueue.value.push({ code: code, scanned_at: new Date().toISOString() })
     saveQueue()
-    showResult({ status: 'valid', icon: 'i-lucide-check-circle', title: 'Valid ticket', subtitle: ticket.holder || ticket.holder_name || code })
     trySyncQueue()
+    scannedTicket.value = { ...ticket, code }
+    scannedTicketStatus.value = 'valid'
+    isTicketModalOpen.value = true
+    scanner?.pause(true)
   } else {
     showResult({ status: 'invalid', icon: 'i-lucide-x-circle', title: 'Invalid ticket', subtitle: code })
   }
 }
 
+watch(isTicketModalOpen, (open) => {
+  if (!open) {
+    lastCode = ''
+    lastCodeTime = 0
+    scanner?.resume()
+  }
+})
+
 function showResult(result) {
   lastResult.value = result
   clearTimeout(resultTimer)
-  resultTimer = setTimeout(() => { lastResult.value = null }, 2500)
+  resultTimer = setTimeout(() => {
+    lastResult.value = null
+  }, 2500)
+}
+
+const clearData = (withTickets = true) => {
+  scanQueue.value = []
+  saveQueue()
+  if (withTickets) localStorage.setItem(cacheKey('tickets'), '[]')
+  localStorage.setItem(cacheKey('scanned'), '[]')
 }
 
 // ─── Init ──────────────────────────────────────────────────────
@@ -305,10 +340,17 @@ async function init() {
 
 // ─── Lifecycle ─────────────────────────────────────────────────
 
-function onOnline() { isOnline.value = true; trySyncQueue() }
-function onOffline() { isOnline.value = false }
+function onOnline() {
+  isOnline.value = true
+  trySyncQueue()
+}
+
+function onOffline() {
+  isOnline.value = false
+}
 
 onMounted(() => {
+  // clearData()
   isOnline.value = navigator.onLine
   window.addEventListener('online', onOnline)
   window.addEventListener('offline', onOffline)

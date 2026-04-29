@@ -91,6 +91,11 @@
       v-model:open="isUploadModalOpen"
       :event="uploadingForEvent"
     />
+
+    <ScansDeleteModal
+      v-model:open="isScansDeleteModalOpen"
+      :event="scansDeleteEvent"
+    />
   </div>
 </template>
 
@@ -114,6 +119,9 @@ const deletingEvent = ref(null)
 
 const isUploadModalOpen = ref(false)
 const uploadingForEvent = ref(null)
+
+const isScansDeleteModalOpen = ref(false)
+const scansDeleteEvent = ref(null)
 
 const columns = [
   { accessorKey: 'title', header: 'Title' },
@@ -159,6 +167,11 @@ function openUploadModal(event) {
   isUploadModalOpen.value = true
 }
 
+function openScansDeleteModal(event) {
+  scansDeleteEvent.value = event
+  isScansDeleteModalOpen.value = true
+}
+
 function getActionItems(event) {
   return [
     [
@@ -167,6 +180,7 @@ function getActionItems(event) {
       { label: 'Edit', icon: 'i-lucide-pencil', onSelect: () => openEditModal(event) }
     ],
     [
+      { label: 'Clear scan logs', icon: 'i-lucide-scan-line', color: 'error', onSelect: () => openScansDeleteModal(event) },
       { label: 'Delete', icon: 'i-lucide-trash-2', color: 'error', onSelect: () => openDeleteModal(event) }
     ]
   ]
