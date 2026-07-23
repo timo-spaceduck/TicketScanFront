@@ -59,8 +59,16 @@
       </nav>
 
       <div class="p-3 border-t border-default space-y-1 shrink-0">
-        <div class="px-3 py-1.5 text-xs text-muted truncate">
-          {{ user?.email }}
+        <div class="px-3 py-1.5 text-xs text-muted truncate flex items-center gap-1.5">
+          <span class="truncate">{{ user?.email }}</span>
+          <UBadge
+            v-if="user?.tariff"
+            :color="user.tariff.status === 'active' ? 'success' : 'warning'"
+            variant="subtle"
+            size="sm"
+          >
+            {{ user.tariff.name }}
+          </UBadge>
         </div>
         <div class="flex items-center gap-1">
           <UButton
@@ -124,7 +132,8 @@ const navItems = [
   { to: '/dashboard/events', label: 'Events', icon: 'i-lucide-calendar' },
   { to: '/dashboard/tickets', label: 'Tickets', icon: 'i-lucide-ticket' },
   { to: '/dashboard/scans', label: 'Scan Logs', icon: 'i-lucide-history' },
-  { to: '/scanner', label: 'Scanner', icon: 'i-lucide-scan-line' }
+  { to: '/scanner', label: 'Scanner', icon: 'i-lucide-scan-line' },
+  { to: '/dashboard/billing', label: 'Billing', icon: 'i-lucide-credit-card' }
 ]
 
 function isActive(path) {

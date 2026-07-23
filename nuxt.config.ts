@@ -4,7 +4,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiHost: process.env.API_HOST || '',
-      apiKey: process.env.API_KEY || ''
+      apiKey: process.env.API_KEY || '',
+      paddleClientToken: process.env.PADDLE_CLIENT_TOKEN || '',
+      paddleEnvironment: process.env.PADDLE_ENVIRONMENT || 'sandbox'
     }
   },
 
