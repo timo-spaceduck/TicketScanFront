@@ -113,7 +113,7 @@
       <Transition name="result">
         <div
           v-if="lastResult"
-          class="absolute bottom-6 left-4 right-4 rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-xl"
+          class="absolute top-6 left-4 right-4 rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-xl z-10"
           :class="{
             'bg-emerald-500': lastResult.status === 'valid',
             'bg-red-500': lastResult.status === 'invalid',
@@ -261,7 +261,7 @@ async function startCamera() {
 
 async function handleScan(code) {
   const now = Date.now()
-  if (code === lastCode && now - lastCodeTime < 2500) return
+  if (code === lastCode && now - lastCodeTime < 3000) return
   lastCode = code
   lastCodeTime = now
 
@@ -340,7 +340,7 @@ function showResult(result) {
   clearTimeout(resultTimer)
   resultTimer = setTimeout(() => {
     lastResult.value = null
-  }, 2500)
+  }, 3000)
 }
 
 const clearData = (withTickets = true) => {
