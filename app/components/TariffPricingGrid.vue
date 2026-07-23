@@ -21,7 +21,6 @@
       :key="tariff.id"
       :tariff="tariff"
       :current-tariff-id="currentTariffId"
-      :current-status="currentStatus"
       :checkout-loading="checkoutLoadingId === tariff.id"
       @subscribe="$emit('subscribe', $event)"
     />
@@ -32,7 +31,6 @@
 defineProps({
   tariffs: { type: Array, required: true },
   currentTariffId: { type: [Number, String], default: null },
-  currentStatus: { type: String, default: null },
   checkoutLoadingId: { type: [Number, String], default: null }
 })
 

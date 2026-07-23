@@ -63,7 +63,7 @@
           <span class="truncate">{{ user?.email }}</span>
           <UBadge
             v-if="user?.tariff"
-            :color="user.tariff.status === 'active' ? 'success' : 'warning'"
+            :color="tariffBadgeColor"
             variant="subtle"
             size="sm"
           >
@@ -120,6 +120,12 @@
 const { user, logout } = useAuth()
 const route = useRoute()
 const colorMode = useColorMode()
+
+const tariffBadgeColor = computed(() => {
+  if (user.value?.tariff?.is_default) return 'neutral'
+  if (user.value?.paid_until && new Date(user.value.paid_until) < new Date()) return 'warning'
+  return 'success'
+})
 
 function toggleColorMode() {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'

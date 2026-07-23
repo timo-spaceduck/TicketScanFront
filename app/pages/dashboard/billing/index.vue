@@ -11,6 +11,7 @@
 
     <CurrentTariffCard
       :tariff="user?.tariff"
+      :paid-until="user?.paid_until"
       class="mb-8"
     />
 
@@ -37,7 +38,6 @@
       v-else
       :tariffs="tariffs || []"
       :current-tariff-id="user?.tariff?.id"
-      :current-status="user?.tariff?.status"
       :checkout-loading-id="checkoutLoadingId"
       @subscribe="subscribe"
     />
@@ -109,14 +109,14 @@ async function handleCheckoutEvent(event) {
   }
 
   const previousTariffId = user.value?.tariff?.id
-  const previousStatus = user.value?.tariff?.status
+  const previousPaidUntil = user.value?.paid_until
   await fetchMe()
 
   if (event.name !== 'checkout.completed') return
 
   for (let i = 0; i < 5; i++) {
-    const changed = user.value?.tariff?.id !== previousTariffId || user.value?.tariff?.status !== previousStatus
-    if (changed && user.value?.tariff?.status === 'active') break
+    const changed = user.value?.tariff?.id !== previousTariffId || user.value?.paid_until !== previousPaidUntil
+    if (changed) break
     await new Promise(resolve => setTimeout(resolve, 1500))
     await fetchMe()
   }

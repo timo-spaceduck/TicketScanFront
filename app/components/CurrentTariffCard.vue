@@ -22,29 +22,33 @@
 
     <div
       v-else
-      class="flex items-center justify-between gap-4 flex-wrap"
+      class="flex items-center gap-4"
     >
-      <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center size-11 rounded-xl bg-primary/10 shrink-0">
-          <UIcon
-            name="i-lucide-credit-card"
-            class="size-6 text-primary"
-          />
+      <div class="flex items-center justify-center size-11 rounded-xl bg-primary/10 shrink-0">
+        <UIcon
+          name="i-lucide-credit-card"
+          class="size-6 text-primary"
+        />
+      </div>
+      <div class="min-w-0">
+        <div class="flex items-center gap-2">
+          <span class="text-lg font-bold text-highlighted">{{ tariff.name }}</span>
+          <UBadge
+            :color="statusColor"
+            variant="subtle"
+            size="sm"
+          >
+            {{ statusLabel }}
+          </UBadge>
         </div>
-        <div class="min-w-0">
-          <div class="flex items-center gap-2">
-            <span class="text-lg font-bold text-highlighted">{{ tariff.name }}</span>
-            <UBadge
-              :color="statusColor"
-              variant="subtle"
-              size="sm"
-            >
-              {{ statusLabel }}
-            </UBadge>
-          </div>
-          <div class="text-sm text-muted mt-0.5">
-            {{ paidUntilLabel }}
-          </div>
+        <div class="text-sm text-muted mt-0.5">
+          {{ limitsLabel }}
+        </div>
+        <div
+          v-if="paidUntilLabel"
+          class="text-sm text-muted"
+        >
+          {{ paidUntilLabel }}
         </div>
       </div>
     </div>
@@ -53,33 +57,38 @@
 
 <script setup>
 const props = defineProps({
-  tariff: { type: Object, default: null }
+  tariff: { type: Object, default: null },
+  paidUntil: { type: String, default: null }
+})
+
+const isExpired = computed(() => {
+  if (!props.paidUntil) return false
+  return new Date(props.paidUntil) < new Date()
 })
 
 const statusColor = computed(() => {
-  switch (props.tariff?.status) {
-    case 'active': return 'success'
-    case 'expired': return 'warning'
-    case 'canceled': return 'neutral'
-    default: return 'neutral'
-  }
+  if (props.tariff?.is_default) return 'neutral'
+  return isExpired.value ? 'warning' : 'success'
 })
 
 const statusLabel = computed(() => {
-  switch (props.tariff?.status) {
-    case 'active': return 'Active'
-    case 'expired': return 'Expired'
-    case 'canceled': return 'Canceled'
-    default: return props.tariff?.status || ''
-  }
+  if (props.tariff?.is_default) return 'Free'
+  return isExpired.value ? 'Expired' : 'Active'
+})
+
+const limitsLabel = computed(() => {
+  const shows = props.tariff?.max_shows
+  const tickets = props.tariff?.max_tickets
+  const parts = []
+  if (shows != null) parts.push(`${shows} event${shows === 1 ? '' : 's'}`)
+  if (tickets != null) parts.push(`${tickets.toLocaleString()} tickets`)
+  return parts.join(' · ')
 })
 
 const paidUntilLabel = computed(() => {
-  if (!props.tariff?.paid_until) return ''
-  const formatted = formatDate(props.tariff.paid_until)
-  if (props.tariff.status === 'expired') return `Expired on ${formatted}`
-  if (props.tariff.status === 'canceled') return `Access until ${formatted}`
-  return `Paid until ${formatted}`
+  if (!props.paidUntil) return ''
+  const formatted = formatDate(props.paidUntil)
+  return isExpired.value ? `Expired on ${formatted}` : `Paid until ${formatted}`
 })
 
 function formatDate(value) {
