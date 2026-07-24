@@ -45,6 +45,8 @@
 </template>
 
 <script setup>
+import { apiCreateCheckout } from '~/api/tariffs.api'
+
 definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 useSeoMeta({ title: 'Billing — TicketScan' })
 
@@ -69,6 +71,21 @@ onUnmounted(() => {
 async function subscribe(tariff) {
   checkoutLoadingId.value = tariff.id
 
+  let transactionId
+  try {
+    const checkout = await apiCreateCheckout(tariff.id)
+    transactionId = checkout.transaction_id
+    if (!transactionId) throw new Error('Missing transaction id')
+  } catch (err) {
+    toast.add({
+      title: 'Checkout failed',
+      description: err?.response?.data?.message || 'Could not start checkout. Please try again.',
+      color: 'error'
+    })
+    checkoutLoadingId.value = null
+    return
+  }
+
   const paddle = await getPaddle()
   if (!paddle) {
     toast.add({
@@ -80,10 +97,7 @@ async function subscribe(tariff) {
     return
   }
 
-  paddle.Checkout.open({
-    items: [{ priceId: tariff.paddle_price_id, quantity: 1 }],
-    ...(user.value?.email ? { customer: { email: user.value.email } } : {})
-  })
+  paddle.Checkout.open({ transactionId })
 
   // Safety net: clear the button spinner even if Paddle never emits a single event.
   const openedForId = tariff.id

@@ -31,6 +31,41 @@
         <p class="mt-1 text-sm text-muted">{{ feature.description }}</p>
       </div>
     </div>
+
+    <div class="mt-24 w-full max-w-4xl">
+      <h2 class="text-2xl font-bold text-highlighted text-center">
+        Pricing
+      </h2>
+      <p class="mt-2 text-sm text-muted text-center">
+        Simple plans that grow with your events.
+      </p>
+
+      <UAlert
+        v-if="tariffsError"
+        color="error"
+        variant="soft"
+        :description="tariffsError"
+        icon="i-lucide-circle-alert"
+        class="mt-8"
+      />
+
+      <div
+        v-if="tariffsLoading"
+        class="flex justify-center py-16"
+      >
+        <UIcon
+          name="i-lucide-loader-circle"
+          class="size-8 animate-spin text-muted"
+        />
+      </div>
+
+      <TariffPricingGrid
+        v-else
+        :tariffs="tariffs || []"
+        class="mt-8"
+        @subscribe="goToRegister"
+      />
+    </div>
   </div>
 </template>
 
@@ -41,6 +76,16 @@ const { isLoggedIn } = useAuth()
 
 if (isLoggedIn.value) {
   await navigateTo('/dashboard/events')
+}
+
+const { tariffs, loading: tariffsLoading, error: tariffsError, fetchTariffs } = useTariffs()
+
+onMounted(() => {
+  fetchTariffs()
+})
+
+function goToRegister() {
+  navigateTo('/register')
 }
 
 const features = [

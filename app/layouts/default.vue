@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="min-h-screen flex flex-col">
     <UHeader>
       <template #left>
         <NuxtLink to="/">
-          <AppLogo class="w-auto h-12 shrink-0"/>
+          <AppLogo class="w-auto h-12 shrink-0" />
         </NuxtLink>
       </template>
 
@@ -37,9 +37,11 @@
       </template>
     </UHeader>
 
-    <UMain>
+    <UMain class="flex-1">
       <slot />
     </UMain>
+
+    <AppFooter />
   </div>
 </template>
 
