@@ -81,12 +81,10 @@
           >
             Sign out
           </UButton>
-          <UButton
+          <UColorModeButton
             variant="ghost"
             color="neutral"
-            :icon="colorMode.value === 'dark' ? 'i-lucide-sun' : 'i-lucide-moon'"
             size="sm"
-            @click="toggleColorMode"
           />
         </div>
       </div>
@@ -119,17 +117,12 @@
 <script setup>
 const { user, logout } = useAuth()
 const route = useRoute()
-const colorMode = useColorMode()
 
 const tariffBadgeColor = computed(() => {
   if (user.value?.tariff?.is_default) return 'neutral'
   if (user.value?.paid_until && new Date(user.value.paid_until) < new Date()) return 'warning'
   return 'success'
 })
-
-function toggleColorMode() {
-  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
-}
 
 const sidebarOpen = ref(false)
 

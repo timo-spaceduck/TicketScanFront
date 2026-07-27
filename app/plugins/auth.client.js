@@ -1,6 +1,6 @@
-export default defineNuxtPlugin(async () => {
+export default defineNuxtPlugin(() => {
   const { token, fetchMe } = useAuth()
   if (token.value) {
-    await fetchMe()
+    fetchMe()
   }
 })
