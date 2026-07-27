@@ -122,7 +122,7 @@
         v-else
         :tariffs="tariffs || []"
         class="mt-8"
-        @subscribe="goToRegister"
+        @subscribe="handleSubscribe"
       />
     </div>
 
@@ -183,8 +183,8 @@ onMounted(() => {
   fetchTariffs()
 })
 
-function goToRegister() {
-  navigateTo('/register')
+function handleSubscribe() {
+  navigateTo(isLoggedIn.value ? '/dashboard/billing' : '/register')
 }
 
 const features = [
