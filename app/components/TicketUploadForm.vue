@@ -91,6 +91,31 @@
       </div>
     </UFormField>
 
+    <div class="flex items-center gap-1.5 text-xs text-muted -mt-3">
+      <span>Not sure about the format?</span>
+      <UButton
+        href="/samples/tickets-example.csv"
+        download
+        variant="link"
+        size="xs"
+        class="p-0"
+        @click.stop
+      >
+        Download example CSV
+      </UButton>
+      <span>or</span>
+      <UButton
+        href="/samples/tickets-example.xlsx"
+        download
+        variant="link"
+        size="xs"
+        class="p-0"
+        @click.stop
+      >
+        Excel
+      </UButton>
+    </div>
+
     <div class="flex justify-end">
       <UButton
         leading-icon="i-lucide-upload"
