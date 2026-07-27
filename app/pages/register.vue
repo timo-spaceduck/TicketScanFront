@@ -100,7 +100,7 @@ import { apiRegister } from '~/api/auth.api'
 
 definePageMeta({ layout: 'auth' })
 
-useSeoMeta({ title: 'Create Account — TicketScan' })
+useSeoMeta({ title: 'Create Account - TicketScan' })
 
 const state = reactive({
   name: '',

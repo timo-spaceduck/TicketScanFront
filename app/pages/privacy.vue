@@ -25,11 +25,11 @@
             2. Information We Collect
           </h2>
           <ul class="mt-2 space-y-2 text-sm text-muted leading-relaxed list-disc list-inside">
-            <li><strong class="text-default">Account information</strong> — your email address and password when you register.</li>
-            <li><strong class="text-default">Event and ticket data</strong> — events you create and ticket lists you upload (e.g. via Excel/CSV), including any attendee information contained in those files.</li>
-            <li><strong class="text-default">Scan logs</strong> — records of ticket scans performed at your events, including timestamps and scan results.</li>
-            <li><strong class="text-default">Billing information</strong> — subscription plan and payment status. Payments are processed by Paddle, our payment provider; we do not store your card details.</li>
-            <li><strong class="text-default">Usage data</strong> — basic technical information such as browser type and IP address, used for security and troubleshooting.</li>
+            <li><strong class="text-default">Account information</strong> - your email address and password when you register.</li>
+            <li><strong class="text-default">Event and ticket data</strong> - events you create and ticket lists you upload (e.g. via Excel/CSV), including any attendee information contained in those files.</li>
+            <li><strong class="text-default">Scan logs</strong> - records of ticket scans performed at your events, including timestamps and scan results.</li>
+            <li><strong class="text-default">Billing information</strong> - subscription plan and payment status. Payments are processed by Paddle, our payment provider; we do not store your card details.</li>
+            <li><strong class="text-default">Usage data</strong> - basic technical information such as browser type and IP address, used for security and troubleshooting.</li>
           </ul>
         </section>
 
@@ -116,7 +116,7 @@
 </template>
 
 <script setup>
-useSeoMeta({ title: 'Privacy Policy — TicketScan' })
+useSeoMeta({ title: 'Privacy Policy - TicketScan' })
 
 const lastUpdated = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
 </script>

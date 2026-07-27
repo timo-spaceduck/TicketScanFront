@@ -60,7 +60,7 @@
 import { apiGetStats } from '~/api/stats.api'
 
 definePageMeta({ layout: 'dashboard', middleware: 'auth' })
-useSeoMeta({ title: 'Overview — TicketScan' })
+useSeoMeta({ title: 'Overview - TicketScan' })
 
 const loading = ref(true)
 const error = ref('')
@@ -70,17 +70,17 @@ const stats = computed(() => [
   {
     label: 'Events',
     icon: 'i-lucide-calendar',
-    value: statsData.value?.shows || '—'
+    value: statsData.value?.shows || '-'
   },
   {
     label: 'Tickets loaded',
     icon: 'i-lucide-file-spreadsheet',
-    value: statsData.value?.tickets || '—'
+    value: statsData.value?.tickets || '-'
   },
   {
     label: 'Tickets validated',
     icon: 'i-lucide-check-circle',
-    value: statsData.value?.validated || '—'
+    value: statsData.value?.validated || '-'
   }
 ])
 

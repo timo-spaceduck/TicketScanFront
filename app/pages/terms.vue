@@ -130,7 +130,7 @@
 </template>
 
 <script setup>
-useSeoMeta({ title: 'Terms of Service — TicketScan' })
+useSeoMeta({ title: 'Terms of Service - TicketScan' })
 
 const lastUpdated = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
 </script>

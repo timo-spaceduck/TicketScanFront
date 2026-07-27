@@ -1,7 +1,7 @@
 <template>
   <UModal
     :open="open"
-    :title="event ? `Upload tickets — ${event.title}` : 'Upload tickets'"
+    :title="event ? `Upload tickets - ${event.title}` : 'Upload tickets'"
     @update:open="$emit('update:open', $event)"
   >
     <template #body>

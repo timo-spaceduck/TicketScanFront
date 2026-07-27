@@ -175,7 +175,7 @@ import { apiGetEvents } from '~/api/events.api'
 import { apiGetTickets } from '~/api/tickets.api'
 
 definePageMeta({ layout: 'dashboard', middleware: 'auth' })
-useSeoMeta({ title: 'Tickets — TicketScan' })
+useSeoMeta({ title: 'Tickets - TicketScan' })
 
 const events = ref([])
 const selectedEventId = ref(null)

@@ -78,7 +78,7 @@ import { apiLogin } from '~/api/auth.api'
 
 definePageMeta({ layout: 'auth' })
 
-useSeoMeta({ title: 'Sign In — TicketScan' })
+useSeoMeta({ title: 'Sign In - TicketScan' })
 
 const state = reactive({
   email: '',

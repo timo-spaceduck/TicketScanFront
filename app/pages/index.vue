@@ -6,7 +6,7 @@
       Scan tickets, manage events, run shows.
     </h1>
     <p class="mt-4 text-lg text-muted text-center max-w-lg">
-      TicketScan is web-based event ticket management and QR code scanning software — import your ticket list,
+      TicketScan is web-based event ticket management and QR code scanning software - import your ticket list,
       check attendees in at the door, and track every scan in real time. No app download required.
     </p>
 
@@ -58,7 +58,7 @@
           />
         </div>
         <h2 class="text-2xl font-bold text-highlighted">
-          100% web-based — no app to download
+          100% web-based - no app to download
         </h2>
         <p class="mt-2 text-muted max-w-xl">
           TicketScan runs entirely in the browser, so there's nothing to install and nothing to update.
@@ -122,17 +122,17 @@
 
 <script setup>
 const description = 'TicketScan is web-based event ticket management and QR code scanning software. '
-  + 'Import ticket lists, check attendees in at the door, and track scans in real time — no app download required.'
+  + 'Import ticket lists, check attendees in at the door, and track scans in real time - no app download required.'
 
 useSeoMeta({
-  title: 'TicketScan — Web-Based Event Ticket Scanning & Management',
+  title: 'TicketScan - Web-Based Event Ticket Scanning & Management',
   description,
-  ogTitle: 'TicketScan — Web-Based Event Ticket Scanning & Management',
+  ogTitle: 'TicketScan - Web-Based Event Ticket Scanning & Management',
   ogDescription: description,
   ogType: 'website',
   ogImage: '/web-app-manifest-512x512.png',
   twitterCard: 'summary',
-  twitterTitle: 'TicketScan — Web-Based Event Ticket Scanning & Management',
+  twitterTitle: 'TicketScan - Web-Based Event Ticket Scanning & Management',
   twitterDescription: description
 })
 
@@ -195,10 +195,10 @@ const features = [
 ]
 
 const webPoints = [
-  'No App Store or Play Store download — nothing to install',
+  'No App Store or Play Store download - nothing to install',
   'Works in any modern browser on desktop, iOS, and Android',
   'Uses your device camera to scan QR codes, right from the browser',
-  'Updates roll out automatically — always the latest version',
+  'Updates roll out automatically - always the latest version',
   'Sign in from as many devices as you need at the door',
   'No storage taken up on staff phones or scanning devices'
 ]

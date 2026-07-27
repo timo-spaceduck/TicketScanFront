@@ -146,7 +146,7 @@ definePageMeta({ layout: 'scanner', middleware: 'auth' })
 const route = useRoute()
 const eventId = route.params.id
 
-useSeoMeta({ title: 'Scanner — TicketScan' })
+useSeoMeta({ title: 'Scanner - TicketScan' })
 
 const isLoading = ref(true)
 const loadingMessage = ref('Loading tickets…')
@@ -421,7 +421,7 @@ onBeforeUnmount(async () => {
   transform: translateY(12px);
 }
 
-/* Strip html5-qrcode's own chrome — keep only the raw video feed */
+/* Strip html5-qrcode's own chrome - keep only the raw video feed */
 :deep(#qr-reader > img),
 :deep(#qr-reader__dashboard),
 :deep(#qr-reader__header_message),

@@ -89,7 +89,7 @@
 import { apiGetEvents } from '~/api/events.api'
 
 definePageMeta({ layout: 'scanner', middleware: 'auth' })
-useSeoMeta({ title: 'Scanner — TicketScan' })
+useSeoMeta({ title: 'Scanner - TicketScan' })
 
 const router = useRouter()
 const events = ref([])

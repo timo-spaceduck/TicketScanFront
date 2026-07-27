@@ -48,7 +48,7 @@
 import { apiCreateCheckout } from '~/api/tariffs.api'
 
 definePageMeta({ layout: 'dashboard', middleware: 'auth' })
-useSeoMeta({ title: 'Billing — TicketScan' })
+useSeoMeta({ title: 'Billing - TicketScan' })
 
 const { user, fetchMe } = useAuth()
 const { tariffs, loading: tariffsLoading, error: tariffsError, fetchTariffs } = useTariffs()
@@ -107,7 +107,7 @@ async function subscribe(tariff) {
 }
 
 async function handleCheckoutEvent(event) {
-  // Any event means Paddle's own overlay/spinner has taken over — stop showing our button spinner.
+  // Any event means Paddle's own overlay/spinner has taken over - stop showing our button spinner.
   checkoutLoadingId.value = null
 
   if (event.name !== 'checkout.closed' && event.name !== 'checkout.completed'

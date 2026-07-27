@@ -18,7 +18,7 @@
 const faqs = [
   {
     label: 'Do I need to download an app to scan tickets?',
-    content: 'No. TicketScan runs entirely in your web browser — open the scanner page on any phone, tablet, or laptop, allow camera access, and start scanning. There\'s nothing to download from the App Store or Play Store.'
+    content: 'No. TicketScan runs entirely in your web browser - open the scanner page on any phone, tablet, or laptop, allow camera access, and start scanning. There\'s nothing to download from the App Store or Play Store.'
   },
   {
     label: 'What devices and browsers are supported?',
@@ -30,7 +30,7 @@ const faqs = [
   },
   {
     label: 'Can multiple staff scan tickets at the same event?',
-    content: 'Yes. Anyone signed in to your account can open the scanner from their own device\'s browser and scan at the same time — no extra hardware or app installs needed.'
+    content: 'Yes. Anyone signed in to your account can open the scanner from their own device\'s browser and scan at the same time - no extra hardware or app installs needed.'
   },
   {
     label: 'What happens if I exceed my plan\'s event or ticket limit?',

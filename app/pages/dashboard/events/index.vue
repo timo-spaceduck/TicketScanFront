@@ -115,7 +115,7 @@ import { apiGetEventsPaginated } from '~/api/events.api'
 definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 
 const router = useRouter()
-useSeoMeta({ title: 'Events — TicketScan' })
+useSeoMeta({ title: 'Events - TicketScan' })
 
 const events = ref([])
 const loading = ref(true)
@@ -146,7 +146,7 @@ const columns = [
 ]
 
 function formatDate(value) {
-  if (!value) return '—'
+  if (!value) return '-'
   return new Date(value).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
 }
 
