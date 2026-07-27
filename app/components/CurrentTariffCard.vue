@@ -67,7 +67,8 @@
 <script setup>
 const props = defineProps({
   tariff: { type: Object, default: null },
-  paidUntil: { type: String, default: null }
+  paidUntil: { type: String, default: null },
+  cancelAt: { type: String, default: null }
 })
 
 defineEmits(['cancel'])
@@ -77,18 +78,23 @@ const isExpired = computed(() => {
   return new Date(props.paidUntil) < new Date()
 })
 
+const isCancelled = computed(() => !!props.cancelAt && !isExpired.value)
+
 const canCancel = computed(() => {
-  return !props.tariff?.is_default && !!props.paidUntil && !isExpired.value
+  return !props.tariff?.is_default && !!props.paidUntil && !isExpired.value && !isCancelled.value
 })
 
 const statusColor = computed(() => {
   if (props.tariff?.is_default) return 'neutral'
-  return isExpired.value ? 'warning' : 'success'
+  if (isExpired.value || isCancelled.value) return 'warning'
+  return 'success'
 })
 
 const statusLabel = computed(() => {
   if (props.tariff?.is_default) return 'Free'
-  return isExpired.value ? 'Expired' : 'Active'
+  if (isExpired.value) return 'Expired'
+  if (isCancelled.value) return 'Cancelled'
+  return 'Active'
 })
 
 const limitsLabel = computed(() => {
@@ -103,7 +109,9 @@ const limitsLabel = computed(() => {
 const paidUntilLabel = computed(() => {
   if (!props.paidUntil) return ''
   const formatted = formatDate(props.paidUntil)
-  return isExpired.value ? `Expired on ${formatted}` : `Paid until ${formatted}`
+  if (isExpired.value) return `Expired on ${formatted}`
+  if (isCancelled.value) return `Access until ${formatted}`
+  return `Paid until ${formatted}`
 })
 
 function formatDate(value) {

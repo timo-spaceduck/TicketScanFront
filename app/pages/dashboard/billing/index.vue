@@ -12,6 +12,7 @@
     <CurrentTariffCard
       :tariff="user?.tariff"
       :paid-until="user?.paid_until"
+      :cancel-at="subscription?.cancel_at"
       class="mb-8"
       @cancel="cancelModalOpen = true"
     />
@@ -52,7 +53,7 @@
 </template>
 
 <script setup>
-import { apiCreateCheckout } from '~/api/tariffs.api'
+import { apiCreateCheckout, apiGetSubscription } from '~/api/tariffs.api'
 
 definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 useSeoMeta({ title: 'Billing - TicketScan' })
@@ -64,13 +65,24 @@ const toast = useToast()
 
 const checkoutLoadingId = ref(null)
 const cancelModalOpen = ref(false)
+const subscription = ref(null)
 
 let unsubscribe = null
 
 onMounted(() => {
   fetchTariffs()
+  fetchSubscription()
   unsubscribe = onCheckoutEvent(handleCheckoutEvent)
 })
+
+async function fetchSubscription() {
+  try {
+    const data = await apiGetSubscription()
+    subscription.value = data?.subscription ?? null
+  } catch {
+    subscription.value = null
+  }
+}
 
 onUnmounted(() => {
   unsubscribe?.()
@@ -115,7 +127,7 @@ async function subscribe(tariff) {
 }
 
 async function handleCancelled() {
-  await fetchMe()
+  await Promise.all([fetchMe(), fetchSubscription()])
   toast.add({
     title: 'Subscription cancelled',
     description: 'Your subscription will not renew. You\'ll keep access until it expires.',
@@ -151,6 +163,8 @@ async function handleCheckoutEvent(event) {
     await new Promise(resolve => setTimeout(resolve, 1500))
     await fetchMe()
   }
+
+  await fetchSubscription()
 
   toast.add({
     title: 'Subscription updated',
