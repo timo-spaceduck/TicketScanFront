@@ -9,30 +9,8 @@
       </p>
     </div>
 
-    <CurrentTariffCard
-      :tariff="user?.tariff"
-      :paid-until="user?.paid_until"
-      :cancel-at="subscription?.cancel_at"
-      class="mb-8"
-      @cancel="cancelModalOpen = true"
-    />
-
-    <CancelSubscriptionModal
-      v-model:open="cancelModalOpen"
-      @cancelled="handleCancelled"
-    />
-
-    <UAlert
-      v-if="tariffsError"
-      color="error"
-      variant="soft"
-      :description="tariffsError"
-      icon="i-lucide-circle-alert"
-      class="mb-4"
-    />
-
     <div
-      v-if="tariffsLoading"
+      v-if="pageLoading"
       class="flex justify-center py-16"
     >
       <UIcon
@@ -41,13 +19,36 @@
       />
     </div>
 
-    <TariffPricingGrid
-      v-else
-      :tariffs="tariffs || []"
-      :current-tariff-id="user?.tariff?.id"
-      :checkout-loading-id="checkoutLoadingId"
-      align="start"
-      @subscribe="subscribe"
+    <template v-else>
+      <CurrentTariffCard
+        :tariff="user?.tariff"
+        :paid-until="user?.paid_until"
+        :cancel-at="subscription?.cancel_at"
+        class="mb-8"
+        @cancel="cancelModalOpen = true"
+      />
+
+      <UAlert
+        v-if="tariffsError"
+        color="error"
+        variant="soft"
+        :description="tariffsError"
+        icon="i-lucide-circle-alert"
+        class="mb-4"
+      />
+
+      <TariffPricingGrid
+        :tariffs="tariffs || []"
+        :current-tariff-id="user?.tariff?.id"
+        :checkout-loading-id="checkoutLoadingId"
+        align="start"
+        @subscribe="subscribe"
+      />
+    </template>
+
+    <CancelSubscriptionModal
+      v-model:open="cancelModalOpen"
+      @cancelled="handleCancelled"
     />
   </div>
 </template>
@@ -59,20 +60,21 @@ definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 useSeoMeta({ title: 'Billing - TicketScan' })
 
 const { user, fetchMe } = useAuth()
-const { tariffs, loading: tariffsLoading, error: tariffsError, fetchTariffs } = useTariffs()
+const { tariffs, error: tariffsError, fetchTariffs } = useTariffs()
 const { getPaddle, onCheckoutEvent } = usePaddle()
 const toast = useToast()
 
 const checkoutLoadingId = ref(null)
 const cancelModalOpen = ref(false)
 const subscription = ref(null)
+const pageLoading = ref(true)
 
 let unsubscribe = null
 
-onMounted(() => {
-  fetchTariffs()
-  fetchSubscription()
+onMounted(async () => {
   unsubscribe = onCheckoutEvent(handleCheckoutEvent)
+  await Promise.all([fetchTariffs(), fetchSubscription(), fetchMe()])
+  pageLoading.value = false
 })
 
 async function fetchSubscription() {
