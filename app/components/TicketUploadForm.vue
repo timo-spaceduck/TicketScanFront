@@ -95,6 +95,7 @@
       <span>Not sure about the format?</span>
       <UButton
         href="/samples/tickets-example.csv"
+        external
         download
         variant="link"
         size="xs"
@@ -106,6 +107,7 @@
       <span>or</span>
       <UButton
         href="/samples/tickets-example.xlsx"
+        external
         download
         variant="link"
         size="xs"
