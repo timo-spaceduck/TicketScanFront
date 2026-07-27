@@ -16,7 +16,7 @@
       :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
       <div class="flex items-center justify-between px-5 h-16 border-b border-default shrink-0">
-        <NuxtLink to="/dashboard" class="flex items-center gap-2.5">
+        <NuxtLink to="/?stay=1" class="flex items-center gap-2.5">
           <AppLogo class="h-9 w-auto shrink-0" />
           <span class="app-wordmark">Ticket<strong>Scan</strong></span>
         </NuxtLink>
@@ -103,7 +103,7 @@
           size="sm"
           @click="sidebarOpen = true"
         />
-        <NuxtLink to="/dashboard" class="flex items-center gap-2">
+        <NuxtLink to="/?stay=1" class="flex items-center gap-2">
           <AppLogo class="h-8 w-auto shrink-0" />
           <span class="app-wordmark">Ticket<strong>Scan</strong></span>
         </NuxtLink>

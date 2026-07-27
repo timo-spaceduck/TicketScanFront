@@ -5,8 +5,14 @@
         <div class="text-lg font-bold text-highlighted">
           {{ tariff.name }}
         </div>
-        <div class="mt-1">
+        <div class="mt-1 flex items-baseline gap-1">
           <span class="text-2xl font-bold text-highlighted">{{ priceLabel }}</span>
+          <span
+            v-if="!tariff.is_default"
+            class="text-sm text-muted"
+          >
+            per month
+          </span>
         </div>
       </div>
 
@@ -26,7 +32,7 @@
 
       <UButton
         block
-        :disabled="isCurrent || !tariff.paddle_price_id"
+        :disabled="isDisabled"
         :loading="checkoutLoading"
         @click="$emit('subscribe', tariff)"
       >
@@ -47,8 +53,15 @@ defineEmits(['subscribe'])
 
 const isCurrent = computed(() => props.tariff.id === props.currentTariffId)
 
+const isDisabled = computed(() => {
+  if (isCurrent.value) return true
+  if (props.tariff.is_default) return false
+  return !props.tariff.paddle_price_id
+})
+
 const buttonLabel = computed(() => {
   if (isCurrent.value) return 'Current plan'
+  if (props.tariff.is_default) return 'Get started'
   if (!props.tariff.paddle_price_id) return 'Unavailable'
   return props.currentTariffId ? 'Switch to this plan' : 'Subscribe'
 })

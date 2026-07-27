@@ -13,6 +13,12 @@
       :tariff="user?.tariff"
       :paid-until="user?.paid_until"
       class="mb-8"
+      @cancel="cancelModalOpen = true"
+    />
+
+    <CancelSubscriptionModal
+      v-model:open="cancelModalOpen"
+      @cancelled="handleCancelled"
     />
 
     <UAlert
@@ -39,6 +45,7 @@
       :tariffs="tariffs || []"
       :current-tariff-id="user?.tariff?.id"
       :checkout-loading-id="checkoutLoadingId"
+      align="start"
       @subscribe="subscribe"
     />
   </div>
@@ -56,6 +63,7 @@ const { getPaddle, onCheckoutEvent } = usePaddle()
 const toast = useToast()
 
 const checkoutLoadingId = ref(null)
+const cancelModalOpen = ref(false)
 
 let unsubscribe = null
 
@@ -104,6 +112,15 @@ async function subscribe(tariff) {
   setTimeout(() => {
     if (checkoutLoadingId.value === openedForId) checkoutLoadingId.value = null
   }, 10000)
+}
+
+async function handleCancelled() {
+  await fetchMe()
+  toast.add({
+    title: 'Subscription cancelled',
+    description: 'Your subscription will not renew. You\'ll keep access until it expires.',
+    color: 'success'
+  })
 }
 
 async function handleCheckoutEvent(event) {

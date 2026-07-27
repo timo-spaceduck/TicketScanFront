@@ -30,7 +30,7 @@
           class="size-6 text-primary"
         />
       </div>
-      <div class="min-w-0">
+      <div class="min-w-0 flex-1">
         <div class="flex items-center gap-2">
           <span class="text-lg font-bold text-highlighted">{{ tariff.name }}</span>
           <UBadge
@@ -51,6 +51,15 @@
           {{ paidUntilLabel }}
         </div>
       </div>
+      <UButton
+        v-if="canCancel"
+        variant="ghost"
+        color="error"
+        size="sm"
+        @click="$emit('cancel')"
+      >
+        Cancel subscription
+      </UButton>
     </div>
   </UCard>
 </template>
@@ -61,9 +70,15 @@ const props = defineProps({
   paidUntil: { type: String, default: null }
 })
 
+defineEmits(['cancel'])
+
 const isExpired = computed(() => {
   if (!props.paidUntil) return false
   return new Date(props.paidUntil) < new Date()
+})
+
+const canCancel = computed(() => {
+  return !props.tariff?.is_default && !!props.paidUntil && !isExpired.value
 })
 
 const statusColor = computed(() => {

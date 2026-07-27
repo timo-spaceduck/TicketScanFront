@@ -12,20 +12,30 @@
 
     <div class="mt-10 flex gap-3 flex-wrap justify-center">
       <UButton
-        to="/login"
+        v-if="isLoggedIn"
+        to="/dashboard"
         size="xl"
-        leading-icon="i-lucide-log-in"
+        leading-icon="i-lucide-layout-dashboard"
       >
-        Sign in
+        Go to dashboard
       </UButton>
-      <UButton
-        to="/register"
-        size="xl"
-        variant="outline"
-        color="neutral"
-      >
-        Create account
-      </UButton>
+      <template v-else>
+        <UButton
+          to="/login"
+          size="xl"
+          leading-icon="i-lucide-log-in"
+        >
+          Sign in
+        </UButton>
+        <UButton
+          to="/register"
+          size="xl"
+          variant="outline"
+          color="neutral"
+        >
+          Create account
+        </UButton>
+      </template>
     </div>
 
     <div class="mt-24 grid grid-cols-1 sm:grid-cols-3 gap-8 w-full max-w-3xl">
@@ -161,8 +171,9 @@ useHead({
 })
 
 const { isLoggedIn } = useAuth()
+const route = useRoute()
 
-if (isLoggedIn.value) {
+if (isLoggedIn.value && route.query.stay === undefined) {
   await navigateTo('/dashboard/events')
 }
 

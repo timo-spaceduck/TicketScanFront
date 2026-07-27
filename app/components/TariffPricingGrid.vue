@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!tariffs.length"
+    v-if="!visibleTariffs.length"
     class="flex flex-col items-center py-16 text-center"
   >
     <UIcon
@@ -14,25 +14,37 @@
 
   <div
     v-else
-    class="grid grid-cols-1 sm:grid-cols-3 gap-4"
+    class="flex flex-wrap gap-4"
+    :class="align === 'start' ? 'justify-start' : 'justify-center'"
   >
-    <TariffCard
-      v-for="tariff in tariffs"
+    <div
+      v-for="tariff in visibleTariffs"
       :key="tariff.id"
-      :tariff="tariff"
-      :current-tariff-id="currentTariffId"
-      :checkout-loading="checkoutLoadingId === tariff.id"
-      @subscribe="$emit('subscribe', $event)"
-    />
+      class="w-full sm:w-72"
+    >
+      <TariffCard
+        :tariff="tariff"
+        :current-tariff-id="currentTariffId"
+        :checkout-loading="checkoutLoadingId === tariff.id"
+        @subscribe="$emit('subscribe', $event)"
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   tariffs: { type: Array, required: true },
   currentTariffId: { type: [Number, String], default: null },
-  checkoutLoadingId: { type: [Number, String], default: null }
+  checkoutLoadingId: { type: [Number, String], default: null },
+  align: { type: String, default: 'center' }
 })
 
 defineEmits(['subscribe'])
+
+const visibleTariffs = computed(() => {
+  const current = props.tariffs.find(t => t.id === props.currentTariffId)
+  const hasPaidPlan = !!current && !current.is_default
+  return props.tariffs.filter(t => !(t.is_default && hasPaidPlan))
+})
 </script>

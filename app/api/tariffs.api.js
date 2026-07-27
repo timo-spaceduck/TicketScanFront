@@ -9,3 +9,8 @@ export async function apiCreateCheckout(tariffId) {
   const { data } = await apiClient.post('/billing/checkout', { tariff_id: tariffId })
   return data
 }
+
+export async function apiCancelSubscription() {
+  const { data } = await apiClient.post('/billing/cancel')
+  return data
+}

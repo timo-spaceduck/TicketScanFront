@@ -10,6 +10,16 @@
       <template #right>
         <UColorModeButton />
 
+        <UButton
+          v-if="isLoggedIn"
+          to="/dashboard"
+          color="neutral"
+          variant="ghost"
+          leading-icon="i-lucide-layout-dashboard"
+        >
+          Dashboard
+        </UButton>
+
         <UDropdownMenu
           v-if="isLoggedIn"
           :items="userMenuItems"
