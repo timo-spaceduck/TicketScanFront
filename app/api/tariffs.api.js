@@ -15,6 +15,11 @@ export async function apiCancelSubscription() {
   return data
 }
 
+export async function apiResumeSubscription() {
+  const { data } = await apiClient.post('/billing/resume')
+  return data
+}
+
 export async function apiGetSubscription() {
   const { data } = await apiClient.get('/billing/subscription')
   return data

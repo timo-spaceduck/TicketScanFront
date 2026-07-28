@@ -24,8 +24,10 @@
         :tariff="user?.tariff"
         :paid-until="user?.paid_until"
         :cancel-at="subscription?.cancel_at"
+        :resuming="resuming"
         class="mb-8"
         @cancel="cancelModalOpen = true"
+        @resume="handleResume"
       />
 
       <UAlert
@@ -54,7 +56,7 @@
 </template>
 
 <script setup>
-import { apiCreateCheckout, apiGetSubscription } from '~/api/tariffs.api'
+import { apiCreateCheckout, apiGetSubscription, apiResumeSubscription } from '~/api/tariffs.api'
 
 definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 useSeoMeta({ title: 'Billing - TicketScan' })
@@ -68,6 +70,7 @@ const checkoutLoadingId = ref(null)
 const cancelModalOpen = ref(false)
 const subscription = ref(null)
 const pageLoading = ref(true)
+const resuming = ref(false)
 
 let unsubscribe = null
 
@@ -135,6 +138,27 @@ async function handleCancelled() {
     description: 'Your subscription will not renew. You\'ll keep access until it expires.',
     color: 'success'
   })
+}
+
+async function handleResume() {
+  resuming.value = true
+  try {
+    await apiResumeSubscription()
+    await Promise.all([fetchMe(), fetchSubscription()])
+    toast.add({
+      title: 'Subscription reactivated',
+      description: 'Your subscription will continue to renew.',
+      color: 'success'
+    })
+  } catch (err) {
+    toast.add({
+      title: 'Reactivation failed',
+      description: err?.response?.data?.message || 'Could not reactivate your subscription. Please try again.',
+      color: 'error'
+    })
+  } finally {
+    resuming.value = false
+  }
 }
 
 async function handleCheckoutEvent(event) {

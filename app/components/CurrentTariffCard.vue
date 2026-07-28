@@ -60,6 +60,16 @@
       >
         Cancel subscription
       </UButton>
+      <UButton
+        v-if="isCancelled"
+        variant="ghost"
+        color="primary"
+        size="sm"
+        :loading="resuming"
+        @click="$emit('resume')"
+      >
+        Reactivate subscription
+      </UButton>
     </div>
   </UCard>
 </template>
@@ -68,10 +78,11 @@
 const props = defineProps({
   tariff: { type: Object, default: null },
   paidUntil: { type: String, default: null },
-  cancelAt: { type: String, default: null }
+  cancelAt: { type: String, default: null },
+  resuming: { type: Boolean, default: false }
 })
 
-defineEmits(['cancel'])
+defineEmits(['cancel', 'resume'])
 
 const isExpired = computed(() => {
   if (!props.paidUntil) return false
