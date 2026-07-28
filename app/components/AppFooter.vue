@@ -9,7 +9,13 @@
         <span class="app-wordmark text-sm">Ticket<strong>Scan</strong></span>
       </NuxtLink>
 
-      <nav class="flex items-center gap-6 text-sm text-muted">
+      <nav class="flex flex-wrap items-center justify-center gap-6 text-sm text-muted">
+        <NuxtLink
+          to="/pricing"
+          class="hover:text-highlighted transition-colors"
+        >
+          Pricing
+        </NuxtLink>
         <NuxtLink
           to="/privacy"
           class="hover:text-highlighted transition-colors"
@@ -21,6 +27,12 @@
           class="hover:text-highlighted transition-colors"
         >
           Terms of Service
+        </NuxtLink>
+        <NuxtLink
+          to="/refund-policy"
+          class="hover:text-highlighted transition-colors"
+        >
+          Refund Policy
         </NuxtLink>
       </nav>
 

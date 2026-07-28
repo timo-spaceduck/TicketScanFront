@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col">
-    <UHeader>
+    <UHeader :toggle="false">
       <template #left>
         <NuxtLink to="/">
           <AppLogo class="w-auto h-12 shrink-0" />
@@ -9,16 +9,6 @@
 
       <template #right>
         <UColorModeButton />
-
-        <UButton
-          v-if="isLoggedIn"
-          to="/dashboard"
-          color="neutral"
-          variant="ghost"
-          leading-icon="i-lucide-layout-dashboard"
-        >
-          Dashboard
-        </UButton>
 
         <UDropdownMenu
           v-if="isLoggedIn"
@@ -60,11 +50,20 @@ const { isLoggedIn, user, logout } = useAuth()
 
 const colorMode = useColorMode()
 
-const userMenuItems = computed(() => [[
-  {
-    label: 'Sign out',
-    icon: 'i-lucide-log-out',
-    onSelect: logout
-  }
-]])
+const userMenuItems = computed(() => [
+  [
+    {
+      label: 'Dashboard',
+      icon: 'i-lucide-layout-dashboard',
+      to: '/dashboard'
+    }
+  ],
+  [
+    {
+      label: 'Sign out',
+      icon: 'i-lucide-log-out',
+      onSelect: logout
+    }
+  ]
+])
 </script>

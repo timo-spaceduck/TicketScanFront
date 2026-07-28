@@ -48,8 +48,17 @@
           <p class="mt-2 text-sm text-muted leading-relaxed">
             Some features require a paid subscription (tariff plan). Payments are processed by
             our payment provider, Paddle. Plan limits (such as the number of events or tickets)
-            apply as described on the pricing page. Fees are non-refundable except as required
-            by law or as stated at the time of purchase.
+            apply as described on the
+            <NuxtLink
+              to="/pricing"
+              class="text-primary hover:underline"
+            >pricing page</NuxtLink>. Fees are non-refundable except as required by law or as
+            stated at the time of purchase - see our
+            <NuxtLink
+              to="/refund-policy"
+              class="text-primary hover:underline"
+            >Refund Policy</NuxtLink>
+            for details.
           </p>
         </section>
 
