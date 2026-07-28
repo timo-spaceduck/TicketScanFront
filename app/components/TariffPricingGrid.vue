@@ -36,6 +36,7 @@
 const props = defineProps({
   tariffs: { type: Array, required: true },
   currentTariffId: { type: [Number, String], default: null },
+  hasPaidPlan: { type: Boolean, default: false },
   checkoutLoadingId: { type: [Number, String], default: null },
   align: { type: String, default: 'center' }
 })
@@ -43,8 +44,6 @@ const props = defineProps({
 defineEmits(['subscribe'])
 
 const visibleTariffs = computed(() => {
-  const current = props.tariffs.find(t => t.id === props.currentTariffId)
-  const hasPaidPlan = !!current && !current.is_default
-  return props.tariffs.filter(t => !(t.is_default && hasPaidPlan))
+  return props.tariffs.filter(t => !(t.is_default && props.hasPaidPlan))
 })
 </script>

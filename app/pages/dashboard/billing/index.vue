@@ -42,6 +42,7 @@
       <TariffPricingGrid
         :tariffs="tariffs || []"
         :current-tariff-id="user?.tariff?.id"
+        :has-paid-plan="!!user?.tariff && !user.tariff.is_default"
         :checkout-loading-id="checkoutLoadingId"
         align="start"
         @subscribe="subscribe"
