@@ -2,8 +2,12 @@
   <div class="min-h-screen flex flex-col">
     <UHeader :toggle="false">
       <template #left>
-        <NuxtLink to="/">
+        <NuxtLink
+          to="/"
+          class="flex items-center gap-2"
+        >
           <AppLogo class="w-auto h-12 shrink-0" />
+          <span class="hidden md:inline app-wordmark text-sm">Ticket<strong>Scan</strong></span>
         </NuxtLink>
       </template>
 
