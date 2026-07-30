@@ -89,6 +89,6 @@ onMounted(() => {
 
 const activeImage = computed(() => {
   const mode = mounted.value && colorMode.value === 'dark' ? 'dark' : 'light'
-  return `/screenshots/${activeTab.value.image}-${mode}.png`
+  return `/screenshots/${activeTab.value.image}-${mode}.webp`
 })
 </script>
