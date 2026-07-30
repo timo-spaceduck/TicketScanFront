@@ -132,7 +132,8 @@ const navItems = [
   { to: '/dashboard/tickets', label: 'Tickets', icon: 'i-lucide-ticket' },
   { to: '/dashboard/scans', label: 'Scan Logs', icon: 'i-lucide-history' },
   { to: '/scanner', label: 'Scanner', icon: 'i-lucide-scan-line' },
-  { to: '/dashboard/billing', label: 'Billing', icon: 'i-lucide-credit-card' }
+  { to: '/dashboard/billing', label: 'Billing', icon: 'i-lucide-credit-card' },
+  { to: '/dashboard/settings', label: 'Settings', icon: 'i-lucide-settings' }
 ]
 
 function isActive(path) {

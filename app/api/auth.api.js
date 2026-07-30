@@ -14,3 +14,8 @@ export async function apiMe() {
   const { data } = await apiClient.get('/auth/me')
   return data
 }
+
+export async function apiChangePassword(payload) {
+  const { data } = await apiClient.put('/auth/password', payload)
+  return data
+}

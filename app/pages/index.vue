@@ -91,6 +91,8 @@
       </div>
     </div>
 
+    <DashboardShowcase class="mt-24" />
+
     <div class="mt-24 w-full max-w-4xl">
       <h2 class="text-2xl font-bold text-highlighted text-center">
         Pricing
