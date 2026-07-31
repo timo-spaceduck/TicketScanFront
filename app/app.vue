@@ -14,6 +14,15 @@ useHead({
     { rel: 'manifest', href: '/site.webmanifest' },
     { rel: 'canonical', href: `https://ticket-scan.com${url.pathname}` }
   ],
+  script: [
+    { src: 'https://www.googletagmanager.com/gtag/js?id=G-4MD3HZX5TN', async: true },
+    {
+      innerHTML: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-4MD3HZX5TN');`
+    }
+  ],
   htmlAttrs: {
     lang: 'en'
   }
