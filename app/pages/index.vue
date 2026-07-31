@@ -133,6 +133,8 @@
 </template>
 
 <script setup>
+import notifican from "~/utils/notifican"
+
 const description = 'TicketScan is web-based event ticket management and QR code scanning software. '
   + 'Import ticket lists, check attendees in at the door, and track scans in real time - no app download required.'
 
@@ -183,6 +185,7 @@ const { tariffs, loading: tariffsLoading, error: tariffsError, fetchTariffs } = 
 
 onMounted(() => {
   fetchTariffs()
+  notifican('ticket scan landing opened')
 })
 
 function handleSubscribe() {
