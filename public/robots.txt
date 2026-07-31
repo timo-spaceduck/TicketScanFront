@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /scanner
+
+Sitemap: https://ticket-scan.com/sitemap.xml
